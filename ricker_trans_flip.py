@@ -71,7 +71,7 @@ k = 10 # carrying capacity
 h = 0.75 # half-saturation constant of harvesting function
 bl = 0.5 # bifurcation parameter (growth rate) low
 bh = 2.6 # bifurcation parameter (growth rate) high
-bcrit = 2.526 # bifurcation point (computed in Mathematica)
+bcrit = 2 # bifurcation point (computed in Mathematica)
 x0 = 0.8 # intial condition
 
 def de_fun(x,r,k,f,h,xi):
@@ -242,7 +242,6 @@ def plot_pspec_grid(tVals, plot_num, var):
         # Set y limit as max power over all time
         for ax in axes:
             ax.set_ylim(top=1.05*max(df_pspec.loc[plot_num,var]['Empirical']), bottom=0)
-#            ax.set_yscale('log')
        
     return g
 
@@ -270,7 +269,7 @@ df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.cs
 #df_ews_means.to_csv('data_export/'+dir_name+'/ews_ensemble_mean.csv')
 #df_ews_deviations.to_csv('data_export/'+dir_name+'/ews_ensemble_std.csv')
 
-
+    
 
 
 
