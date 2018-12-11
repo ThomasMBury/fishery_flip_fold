@@ -28,7 +28,7 @@ from ews_compute import ews_compute
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_flip_ews_1'
+dir_name = 'ricker_flip_ews_short'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -42,7 +42,7 @@ if not os.path.exists('data_export/'+dir_name):
 # Simulation parameters
 dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
-tmax = 1000
+tmax = 400
 tburn = 100 # burn-in period
 numSims = 5
 seed = 10 # random number generation seed
