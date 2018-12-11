@@ -5,7 +5,7 @@ Created on Tue Nov 20 16:41:47 2018
 
 @author: Thomas Bury
 
-Code to simulate the Ricker model crossing the Fold bifurcation
+Code to simulate the Ricker model crossing the Flip bifurcation
 and evaluate EWS.
 
 """
@@ -28,7 +28,7 @@ from ews_compute import ews_compute
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_fold_ews_1'
+dir_name = 'ricker_flip_ews_1'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -52,7 +52,7 @@ sigma = 0.05 # noise intensity
 dt2 = 1 # spacing between time-series for EWS computation
 rw = 0.25 # rolling window
 bw = 0.05 # bandwidth
-lags = [1,2,4] # autocorrelation lag times
+lags = [1,2,3] # autocorrelation lag times
 ews = ['var','ac','sd','cv','skew','kurt','smax','aic','cf'] # EWS to compute
 ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
@@ -66,12 +66,12 @@ pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
 # Model
     
 # Model parameters
-r = 0.75 # growth rate
+f = 0 # harvesting rate (fixed for exploring flip bifurcation)
 k = 10 # carrying capacity
 h = 0.75 # half-saturation constant of harvesting function
-bl = 0 # bifurcation parameter (harvesting) low
-bh = 3 # bifurcation parameter (harvesting) high
-bcrit = 2.364 # bifurcation point (computed in Mathematica)
+bl = 0.5 # bifurcation parameter (growth rate) low
+bh = 2.6 # bifurcation parameter (growth rate) high
+bcrit = 2.526 # bifurcation point (computed in Mathematica)
 x0 = 0.8 # intial condition
 
 def de_fun(x,r,k,f,h,xi):
@@ -108,14 +108,14 @@ for j in range(numSims):
     
     # Run burn-in period on x0
     for i in range(int(tburn/dt)):
-        x0 = de_fun(x0,r,k,bl,h,dW_burn[i])
+        x0 = de_fun(x0,bl,k,f,h,dW_burn[i])
         
     # Initial condition post burn-in period
     x[0]=x0
     
     # Run simulation
     for i in range(len(t)-1):
-        x[i+1] = de_fun(x[i],r,k,b.iloc[i], h,dW[i])
+        x[i+1] = de_fun(x[i],b.iloc[i],k,f, h,dW[i])
         # make sure that state variable remains >= 0
         if x[i+1] < 0:
             x[i+1] = 0
@@ -213,7 +213,7 @@ fig1, axes = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(6,6))
 df_ews.loc[plot_num,var][['State variable','Smoothing']].plot(ax=axes[0],
           title='Early warning signals for a single realisation')
 df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
-df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-4 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
+df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
 df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
 df_ews.loc[plot_num,var]['Coherence factor'].dropna().plot(ax=axes[2], secondary_y=True, legend=True)
 df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].dropna().plot(ax=axes[3],legend=True)
