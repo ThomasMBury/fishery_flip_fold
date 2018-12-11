@@ -1,0 +1,25 @@
+# Discrete Fish Model vary r - make r a variable
+
+# Dynamics (remember discrete form)
+x' = x*exp(r*(1-x/k)) - f*x^2/(x^2+h^2)
+r' = r
+
+# parameters
+par k=10
+par f=0
+par h = 0.75
+
+
+# initial conditions
+x(0)=10.1, r(0)=0.1
+
+
+# set method to discrete
+@ meth=discrete
+
+
+@ xp=r,yp=x,xlo=0,xhi=3.5,ylo=0,yhi=20, bell=0
+@ total=1000, maxstor=2000000,bounds=1000000,trans=350
+
+
+done

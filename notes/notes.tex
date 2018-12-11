@@ -1,0 +1,171 @@
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt]{article} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amssymb} % Math packages
+\usepackage{enumitem} % Package for lists
+\usepackage{graphicx} % Package for figures
+\usepackage{changepage} % Allows for change of margin during paragraph
+\usepackage[total={6.7in,9in}]{geometry} % Span of text over the page
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{bm}		% For bold greek letters
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{sidecap}
+
+% definition equals sign
+\newcommand\defeq{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily def}}}{=}}}
+
+
+
+\usepackage{ntheorem}
+\theoremstyle{break}
+\newtheorem{theorem}{Theorem}[section]
+
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{headings} % Makes all pages in the document conform to the custom headers and footers
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\vec}[1]{\bm{#1}} % Use bold vectors
+
+\DeclareMathOperator{\Tr}{Tr} % For trace and determinant text in equations
+\DeclareMathOperator{\Det}{Det}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textit{The University of Waterloo} \\ [10pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Discrete Population Model (Ricker, Harvesting) % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Tom Bury} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+
+%\setcounter{tocdepth}{2}
+%\tableofcontents
+
+
+
+
+
+%-----------------------
+% Model Framework
+%------------------------
+
+
+\section{Model Framework}
+
+\begin{itemize}
+
+\item Generic discrete population model subject to exploitation - used to model population dynamics of a variety of organisms (fisheries, insects, birds)- Ricker-type model.
+
+\item Model reads
+\begin{equation}
+N_{t+1} = N_t e^{(r_t(1-N_t/K) + \sigma_E \epsilon_{E,t} )} - F\frac{N_t^2}{N_t^2 + h^2}
+\end{equation}
+
+\begin{itemize}
+\item $N_t$ population biomass at time t
+\item $r_t = r_0e^{\sigma_r \epsilon_{r,t}}$ intrinsic growth rate with demographic stochasticity (exponential filtering used)
+\item $K$ carrying capacity of population - finite due to density dependent effects
+\item $F$ maximum harvesting rate
+\item $h$ half saturation of sigmoidal exploitation term
+\item $\epsilon_{r,t}$, $\epsilon_{E,t}$ Gaussian noise terms for demographic and environmental stochasticity with mean zero standard deviations $\sigma_r$ and $\sigma_E$.
+
+
+\end{itemize}
+
+\end{itemize}
+
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../figures/fish_ews.png}
+\caption{Early warning signals preceding the Fold and Hopf bifurcation}
+\end{figure}
+
+
+
+
+
+
+
+
+\pagebreak
+
+%----------------------
+% Data analysis
+%---------------------
+
+\section{Data analysis}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ---------------------------
+% Bibliography
+%---------------------------
+
+\pagebreak
+
+\bibliographystyle{unsrt}
+\bibliography{../../../bibliographies/critical_transitions.bib}
+
+
+
+
+
+
+
+
+\end{document}
+
+

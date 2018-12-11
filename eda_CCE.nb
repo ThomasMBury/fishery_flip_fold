@@ -1,0 +1,1770 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     76840,       1762]
+NotebookOptionsPosition[     72807,       1657]
+NotebookOutlinePosition[     73160,       1673]
+CellTagsIndexPosition[     73117,       1670]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Analysis of CCE fish data", "Title",
+ CellChangeTimes->{{3.724715717032892*^9, 3.724715722888198*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Import and Curate Data", "Section",
+ CellChangeTimes->{{3.7247157490245867`*^9, 3.72471575256083*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"data", " ", "in", " ", "raw", " ", "form", " ", 
+    RowBox[{"(", 
+     RowBox[{"time", ",", " ", "species", ",", " ", "count"}], ")"}]}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"raw", "=", 
+    RowBox[{
+     RowBox[{
+     "Import", "[", 
+      "\"\</Users/tb460/Library/Mobile \
+Documents/com~apple~CloudDocs/Research/critical_transiitons_16/fish_project/\
+data/data_CCE.csv\>\"", "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{
+       RowBox[{"3", ";;"}], ",", ";;"}], "]"}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.724715754459176*^9, 3.724715775956218*^9}, {
+  3.724715847688651*^9, 3.724715891953001*^9}, {3.735781711962305*^9, 
+  3.73578173136639*^9}},ExpressionUUID->"a1617743-37b0-4d3e-899c-\
+e923f25db64d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"raw", "//", "Dimensions"}]], "Input",
+ CellChangeTimes->{{3.724716141010707*^9, 
+  3.7247161459633512`*^9}},ExpressionUUID->"02faa889-a128-4c87-9ef0-\
+133651d6b9fb"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"328173", ",", "3"}], "}"}]], "Output",
+ CellChangeTimes->{3.724716146609193*^9, 3.7247238195724773`*^9, 
+  3.7357817398518887`*^9},ExpressionUUID->"505b7220-9bb5-4401-b274-\
+be3200535f34"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"extract", " ", "date", " ", "from", " ", "time", " ", "column"}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"raw", "[", 
+     RowBox[{"[", 
+      RowBox[{";;", ",", "1"}], "]"}], "]"}], "=", 
+    RowBox[{"StringTake", "[", 
+     RowBox[{
+      RowBox[{"raw", "[", 
+       RowBox[{"[", 
+        RowBox[{";;", ",", "1"}], "]"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", "10"}], "}"}]}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.72472289777125*^9, 3.724722925863667*^9}, {
+  3.724722961705531*^9, 
+  3.72472298804309*^9}},ExpressionUUID->"c593fd29-06f3-48a4-97e3-\
+33afb4fba879"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "make", " ", "a", " ", "function", " ", "to", " ", "convert", " ", "date",
+      " ", "cell", " ", "to", " ", "number", " ", "of", " ", "days", " ", 
+     "after", " ", "1951"}], "-", "01", "-", "08"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Clear", "[", "toDays", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"toDays", ",", "Listable"}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"toDays", "[", "date_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"DateObject", "[", "date", "]"}], "-", 
+       RowBox[{"DateObject", "[", 
+        RowBox[{"{", 
+         RowBox[{"1951", ",", "01", ",", "08"}], "}"}], "]"}]}], ")"}], "//", 
+     "QuantityMagnitude"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.724720064208747*^9, 3.724720149660749*^9}, {
+  3.724720185839141*^9, 3.724720197848037*^9}, {3.724720383569026*^9, 
+  3.724720391712081*^9}, {3.724720454011248*^9, 3.724720468026389*^9}, {
+  3.724723015260028*^9, 
+  3.724723040859754*^9}},ExpressionUUID->"b8c622f5-4e61-42ae-864c-\
+a9a209dbe9f8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Tally", " ", "time", " ", "values"}], ",", " ", 
+    RowBox[{
+     RowBox[{
+     "apply", " ", "function", " ", "to", " ", "time", " ", "values"}], " ", 
+     "-", " ", 
+     RowBox[{"put", " ", "back", " ", "into", " ", "raw", " ", "data"}]}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"time", "=", 
+     RowBox[{"raw", "[", 
+      RowBox[{"[", 
+       RowBox[{";;", ",", "1"}], "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"temp", "=", 
+     RowBox[{"Tally", "[", "time", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"timeVals", "=", 
+     RowBox[{"toDays", "[", 
+      RowBox[{
+       RowBox[{"Tally", "[", "time", "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{";;", ",", "1"}], "]"}], "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"newTime", "=", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{
+          RowBox[{"timeVals", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], ",", 
+          RowBox[{"temp", "[", 
+           RowBox[{"[", 
+            RowBox[{"i", ",", "2"}], "]"}], "]"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", 
+          RowBox[{"Length", "[", "timeVals", "]"}]}], "}"}]}], "]"}], "//", 
+      "Flatten"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"raw2", "=", 
+     RowBox[{
+      RowBox[{"Prepend", "[", 
+       RowBox[{
+        RowBox[{"Transpose", "[", "raw", "]"}], ",", "newTime"}], "]"}], "//",
+       "Transpose"}]}], ";"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.724723054471961*^9, 3.7247230830044203`*^9}, {
+  3.724723616974956*^9, 3.7247236288939123`*^9}, {3.724723813269318*^9, 
+  3.7247239322261257`*^9}, {3.7247239782418222`*^9, 
+  3.724723979601591*^9}},ExpressionUUID->"419db23f-e8a4-42c5-9f2a-\
+b97c28a7ead1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"raw2", "[", 
+   RowBox[{"[", 
+    RowBox[{
+     RowBox[{"1", ";;", "300"}], ",", ";;"}], "]"}], "]"}], "//", 
+  "MatrixForm"}]], "Input",
+ CellChangeTimes->{{3.7247240386223793`*^9, 3.724724059754665*^9}, 
+   3.724724230417274*^9, {3.735781598024399*^9, 
+   3.7357816068225107`*^9}},ExpressionUUID->"ca4fb2e0-19b5-42cd-9e42-\
+01df23ba2f77"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"1", "\<\"1951-01-09\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"1", "\<\"1951-01-09\"\>", "\<\"Sebastes\"\>", "1"},
+     {"1", "\<\"1951-01-09\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Protomyctophum crockeri\"\>", "2"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Vinciguerria lucetia\"\>", "4"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Citharichthys\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Nannobrachium\"\>", "6"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Sebastes\"\>", "6"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Diogenichthys atlanticus\"\>", "2"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Trachurus symmetricus\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Cyclothone\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Vinciguerria lucetia\"\>", "13"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Unidentified\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Nannobrachium\"\>", "2"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Stomias atriventer\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Tetragonurus cuvieri\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Vinciguerria lucetia\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Disintegrated fish larvae\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "2"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Bathylagoides wesethi\"\>", "2"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"2", "\<\"1951-01-10\"\>", "\<\"Myctophidae\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Bathylagoides wesethi\"\>", "2"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Myctophum nitidulum\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Hygophum atratum\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Diogenichthys\"\>", "5"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Ceratoscopelus townsendi\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Cyclothone\"\>", "3"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Vinciguerria lucetia\"\>", "2"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "2"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Cyclothone\"\>", "4"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Merluccius productus\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Tetragonurus cuvieri\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Nannobrachium\"\>", "6"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Idiacanthus antrostomus\"\>", "2"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Diogenichthys atlanticus\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Cololabis saira\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "2"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Sebastes\"\>", "2"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Idiacanthus antrostomus\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Unidentified\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Stenobrachius leucopsarus\"\>", "4"},
+     {"2", "\<\"1951-01-11\"\>", "\<\"Protomyctophum crockeri\"\>", "2"},
+     {"3", "\<\"1951-01-11\"\>", "\<\"Sebastes\"\>", "3"},
+     {"3", "\<\"1951-01-11\"\>", "\<\"Melamphaes\"\>", "3"},
+     {"3", "\<\"1951-01-11\"\>", "\<\"Stenobrachius leucopsarus\"\>", "10"},
+     {"3", "\<\"1951-01-11\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"3", "\<\"1951-01-12\"\>", "\<\"Citharichthys\"\>", "1"},
+     {"3", "\<\"1951-01-12\"\>", "\<\"Sebastes\"\>", "3"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Citharichthys\"\>", "2"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Leuroglossus stilbius\"\>", "2"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Engraulis mordax\"\>", "93"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Sebastes\"\>", "22"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Stenobrachius leucopsarus\"\>", "4"},
+     {"3", "\<\"1951-01-13\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Disintegrated fish larvae\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Sebastes\"\>", "3"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Leuroglossus stilbius\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Engraulis mordax\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Melamphaes\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Sebastes\"\>", "2"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Citharichthys\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Vinciguerria lucetia\"\>", "9"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Brama\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Nannobrachium\"\>", "12"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Leuroglossus stilbius\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Stenobrachius leucopsarus\"\>", "3"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Cyclothone\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Diogenichthys atlanticus\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Lipolagus ochotensis\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Diogenichthys atlanticus\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Nannobrachium\"\>", "8"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Cyclothone\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Ichthyococcus\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Melamphaes\"\>", "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Paralepididae\"\>", "2"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"3", "\<\"1951-01-14\"\>", "\<\"Cololabis saira\"\>", "1"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Myctophidae\"\>", "5"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Tetragonurus cuvieri\"\>", "1"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Brama\"\>", "2"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Symbolophorus californiensis\"\>", "15"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Bathylagoides wesethi\"\>", "1"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Vinciguerria lucetia\"\>", "5"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Cololabis saira\"\>", "1"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Ceratoscopelus townsendi\"\>", "1"},
+     {"3", "\<\"1951-01-15\"\>", "\<\"Electrona risso\"\>", "5"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Diogenichthys atlanticus\"\>", "34"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Cyclothone\"\>", "10"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Unidentified\"\>", "4"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Loweina rara\"\>", "1"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Nannobrachium\"\>", "2"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Vinciguerria lucetia\"\>", "6"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Diogenichthys atlanticus\"\>", "6"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Cololabis saira\"\>", "2"},
+     {"4", "\<\"1951-01-15\"\>", "\<\"Cyclothone\"\>", "5"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Hygophum reinhardtii\"\>", "3"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Idiacanthus antrostomus\"\>", "1"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Ceratoscopelus townsendi\"\>", "2"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"5", "\<\"1951-01-15\"\>", "\<\"Vinciguerria lucetia\"\>", "2"},
+     {"6", "\<\"1951-01-15\"\>", "\<\"Cyclothone\"\>", "2"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Loweina rara\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Stomias atriventer\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Ceratoscopelus townsendi\"\>", "5"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Hygophum reinhardtii\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Cyclothone\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Vinciguerria lucetia\"\>", "9"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Cyclothone\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Protomyctophum crockeri\"\>", "3"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Diogenichthys atlanticus\"\>", "1"},
+     {"6", "\<\"1951-01-16\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Ceratoscopelus townsendi\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Diogenichthys atlanticus\"\>", "2"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Citharichthys\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Nannobrachium\"\>", "3"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Cyclothone\"\>", "3"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Diogenichthys atlanticus\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Citharichthys\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Scopelarchidae\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Myctophidae\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Diogenichthys atlanticus\"\>", "8"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Tetragonurus cuvieri\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "2"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Sebastes\"\>", "13"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Trachipteridae\"\>", "1"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Sebastes goodei\"\>", "2"},
+     {"6", "\<\"1951-01-17\"\>", "\<\"Sebastes paucispinis\"\>", "1"},
+     {"7", "\<\"1951-01-17\"\>", "\<\"Pleuronichthys decurrens\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Protomyctophum crockeri\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Stenobrachius leucopsarus\"\>", "24"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes paucispinis\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Lipolagus ochotensis\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes jordani\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Engraulis mordax\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Leuroglossus stilbius\"\>", "4"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Tarletonbeania crenularis\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes\"\>", "38"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Stenobrachius leucopsarus\"\>", "3"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Disintegrated fish larvae\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Unidentified\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes paucispinis\"\>", "4"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes jordani\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Leuroglossus stilbius\"\>", "5"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Citharichthys\"\>", "3"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Engraulis mordax\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Engraulis mordax\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Pleuronichthys coenosus\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Gobiidae\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes\"\>", "27"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Pleuronichthys decurrens\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Lipolagus ochotensis\"\>", "3"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Leuroglossus stilbius\"\>", "34"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes diploproa\"\>", "3"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes paucispinis\"\>", "4"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Tarletonbeania crenularis\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Stenobrachius leucopsarus\"\>", "61"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes jordani\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Nannobrachium\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes\"\>", "10"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes jordani\"\>", "17"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Merluccius productus\"\>", "2"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Sebastes paucispinis\"\>", "8"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Leuroglossus stilbius\"\>", "69"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Lipolagus ochotensis\"\>", "1"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Stenobrachius leucopsarus\"\>", "39"},
+     {"7", "\<\"1951-01-18\"\>", "\<\"Engraulis mordax\"\>", "27"},
+     {"8", "\<\"1951-01-18\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes\"\>", "3"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Engraulis mordax\"\>", "12"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Merluccius productus\"\>", "3"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Stenobrachius leucopsarus\"\>", "55"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Icichthys lockingtoni\"\>", "1"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Leuroglossus stilbius\"\>", "69"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Lipolagus ochotensis\"\>", "1"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes jordani\"\>", "8"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes paucispinis\"\>", "5"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes aurora\"\>", "1"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Leuroglossus stilbius\"\>", "25"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Lipolagus ochotensis\"\>", "1"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes paucispinis\"\>", "14"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes jordani\"\>", "5"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Tarletonbeania crenularis\"\>", "4"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Stenobrachius leucopsarus\"\>", "209"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Lyopsetta exilis\"\>", "1"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Engraulis mordax\"\>", "13"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Sebastes\"\>", "10"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Citharichthys\"\>", "2"},
+     {"8", "\<\"1951-01-19\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Sebastes\"\>", "6"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Stenobrachius leucopsarus\"\>", "26"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Icichthys lockingtoni\"\>", "1"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Leuroglossus stilbius\"\>", "129"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Girella nigricans\"\>", "1"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Sebastes diploproa\"\>", "3"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Sternoptychidae\"\>", "1"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Leuroglossus stilbius\"\>", "1"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"8", "\<\"1951-01-20\"\>", "\<\"Citharichthys\"\>", "1"},
+     {"9", "\<\"1951-01-20\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Myctophum nitidulum\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Diogenichthys laternatus\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Cololabis saira\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Diogenichthys\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "7"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Cyclothone\"\>", "6"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Nannobrachium\"\>", "2"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Paralepididae\"\>", "2"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Protomyctophum crockeri\"\>", "2"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Stomias atriventer\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Vinciguerria lucetia\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "2"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Cyclothone\"\>", "4"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Bathylagoides wesethi\"\>", "2"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Diogenichthys\"\>", "4"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"9", "\<\"1951-01-21\"\>", "\<\"Nannobrachium\"\>", "3"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Cololabis saira\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Diogenichthys\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Stenobrachius leucopsarus\"\>", "2"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Symbolophorus californiensis\"\>", 
+      "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Melamphaes\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Stenobrachius leucopsarus\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Sebastes\"\>", "6"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Sebastes\"\>", "63"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Disintegrated fish larvae\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Merluccius productus\"\>", "1"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Stenobrachius leucopsarus\"\>", "5"},
+     {"9", "\<\"1951-01-22\"\>", "\<\"Nannobrachium\"\>", "2"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Gobiidae\"\>", "2"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Sebastes\"\>", "80"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Stenobrachius leucopsarus\"\>", "115"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Engraulis mordax\"\>", "48"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Citharichthys\"\>", "15"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Merluccius productus\"\>", "1"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Argentina sialis\"\>", "2"},
+     {"9", "\<\"1951-01-23\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"9", "\<\"1951-01-10\"\>", "\<\"Protomyctophum crockeri\"\>", "3"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Citharichthys\"\>", "16"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Argentina sialis\"\>", "3"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Sebastes\"\>", "91"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Engraulis mordax\"\>", "14"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Argentina sialis\"\>", "3"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Engraulis mordax\"\>", "67"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Disintegrated fish larvae\"\>", "3"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Unidentified\"\>", "2"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Melamphaes\"\>", "2"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Citharichthys\"\>", "72"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Sebastes\"\>", "38"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Engraulis mordax\"\>", "4"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Paralepididae\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Disintegrated fish larvae\"\>", "12"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Triphoturus mexicanus\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Diogenichthys atlanticus\"\>", "2"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Nannobrachium\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Diogenichthys laternatus\"\>", "3"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Triphoturus mexicanus\"\>", "2"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"10", "\<\"1951-01-10\"\>", "\<\"Scopelarchidae\"\>", "1"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Protomyctophum crockeri\"\>", "1"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Citharichthys\"\>", "2"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Vinciguerria lucetia\"\>", "5"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Nannobrachium\"\>", "2"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Diogenichthys laternatus\"\>", "2"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Engraulis mordax\"\>", "3"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Vinciguerria lucetia\"\>", "25"},
+     {"10", "\<\"1951-01-11\"\>", "\<\"Nannobrachium\"\>", "2"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{{3.724724044474831*^9, 3.724724060101754*^9}, 
+   3.724724230849826*^9, {3.7357816004985313`*^9, 3.7357816071197557`*^9}, 
+   3.7357817500844097`*^9},ExpressionUUID->"fbb3c53d-0f82-4d97-9947-\
+15fead88c5cf"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Type of fish", "Subsection",
+ CellChangeTimes->{{3.724716512676919*^9, 3.724716516643495*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"list", " ", "of", " ", "exploited", " ", "fish", " ", "species"}],
+    " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"fishExp", "=", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<Engraulis mordax\>\"", ",", "\"\<Merluccius productus\>\"", ",", 
+      "\"\<Sardinops sagax\>\"", ",", "\"\<Scomber japonicus\>\"", ",", 
+      "\"\<Trachurus symmetricus\>\"", ",", "\"\<Microstomus pacificus\>\"", 
+      " ", ",", "\"\<Paralabrax clathratus\>\"", ",", 
+      "\"\<Paralichthys californicus\>\"", ",", "\"\<Parophrys vetulus\>\"", 
+      ",", "\"\<Scorpaenichthys marmoratus\>\"", " ", ",", 
+      "\"\<Sebastes aurora\>\"", ",", "\"\<Sebastes paucispinis\>\"", ",", 
+      " ", "\"\<Sphyraena argentea\>\""}], "}"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.724717702704157*^9, 3.724717731333106*^9}, {
+  3.724717839742461*^9, 3.724717979893536*^9}, {3.724718018162282*^9, 
+  3.724718144100762*^9}},ExpressionUUID->"5ed3397c-59c1-494a-9538-\
+85f87f35d6c6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fishNexp", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<Cololabis saira\>\"", ",", "\"\<Icichthys lockingtoni\>\"", ",", 
+     "\"\<Leuroglossus stilbius\>\"", ",", "\"\<Tetragonurus cuvieri\>\"", 
+     ",", "\"\<Trachipterus altivelis\>\"", ",", 
+     "\"\<Chromis punctipinnis\>\"", ",", "\"\<Lyopsetta exilis\>\"", ",", 
+     "\"\<Hippoglossina stomata\>\"", ",", 
+     "\"\<Pleuronichthys verticalis\>\"", ",", "\"\<Sebastes jordani\>\"", 
+     ",", "\"\<Symphurus atricaudus\>\"", ",", "\"\<Zaniolepis frenata\>\"", 
+     ",", "\"\<Argentina sialis\>\"", ",", "\"\<Hypsoblennius jenkinsi\>\"", 
+     ",", "\"\<Ophidion scrippsae\>\"", ",", "\"\<Oxylebius pictus\>\""}], 
+    "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.724718173347542*^9, 3.7247183119933443`*^9}, 
+   3.724724976297184*^9},ExpressionUUID->"286191eb-c07b-4b61-88aa-\
+26dc2babb331"],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"organise", " ", "data", " ", "into", " ", "fish", " ", "types"}], 
+  " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.724724253789544*^9, 
+  3.724724260677142*^9}},ExpressionUUID->"84ad7d64-6347-4566-834a-\
+1cbd4aa46f52"],
+
+Cell["", "Subsubsection",
+ CellChangeTimes->{{3.724724292601606*^9, 3.724724293162581*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Exploited Fish", "Subsubsection",
+ CellChangeTimes->{{3.72471705300764*^9, 3.7247170601115294`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"exp1", "//", "Dimensions"}]], "Input",
+ CellChangeTimes->{{3.7357815075442*^9, 
+  3.735781511137772*^9}},ExpressionUUID->"4f716dd8-31ae-4660-9a64-\
+ed0f0c078e68"],
+
+Cell[BoxData[
+ RowBox[{"{", "13", "}"}]], "Output",
+ CellChangeTimes->{3.735781511496015*^9, 
+  3.735781750462658*^9},ExpressionUUID->"9645e20d-0213-4871-9c46-\
+8f83e3ab5adf"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"exp1", "[", 
+  RowBox[{"[", "1", "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.735781512938265*^9, 
+  3.735781514555163*^9}},ExpressionUUID->"c248df3a-1f4c-40fe-b670-\
+ad596e831d5a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  TagBox[
+   FrameBox[GridBox[{
+      {
+       ItemBox[
+        TagBox[
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"3", ",", "93"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"3", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"7", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"7", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"7", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"7", ",", "27"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"8", ",", "12"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"8", ",", "13"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"9", ",", "48"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"10", ",", "14"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"10", ",", "67"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"10", ",", "4"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"10", ",", "3"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"10", ",", "3"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"11", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"12", ",", "11"}], "}"}], ",", 
+           TemplateBox[{"18461"},
+            "OutputSizeLimit`Skeleton"], ",", 
+           RowBox[{"{", 
+            RowBox[{"23466", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23466", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23466", ",", "16"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23466", ",", "9"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23469", ",", "8"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23469", ",", "4"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23475", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23476", ",", "5"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23477", ",", "7"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23477", ",", "24"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23477", ",", "5"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23477", ",", "5"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23470", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23471", ",", "2"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23471", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"23473", ",", "1"}], "}"}]}], "}"}],
+         Short[#, 5]& ],
+        BaseStyle->{Deployed -> False},
+        StripOnInput->False]},
+      {GridBox[{
+         {
+          TagBox[
+           TooltipBox[
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource[
+                "FEStrings", "sizeBriefExplanation"], StandardForm],
+               ImageSizeCache->{58., {2., 8.}}],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLText",
+             StripOnInput->False],
+            StyleBox[
+             DynamicBox[
+              ToBoxes[
+               FEPrivate`FrontEndResource["FEStrings", "sizeExplanation"], 
+               StandardForm]], DynamicUpdating -> True, StripOnInput -> 
+             False]],
+           Annotation[#, 
+            Style[
+             Dynamic[
+              FEPrivate`FrontEndResource["FEStrings", "sizeExplanation"]], 
+             DynamicUpdating -> True], "Tooltip"]& ], 
+          ButtonBox[
+           PaneSelectorBox[{False->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
+                StandardForm],
+               ImageSizeCache->{50., {0., 8.}}],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControl",
+             StripOnInput->False], True->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
+                StandardForm]],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControlActive",
+             StripOnInput->False]}, Dynamic[
+             CurrentValue["MouseOver"]],
+            Alignment->Center,
+            FrameMargins->0,
+            ImageSize->{Automatic, 25}],
+           Appearance->None,
+           BaselinePosition->Baseline,
+           
+           ButtonFunction:>OutputSizeLimit`ButtonFunction[
+            OutputSizeLimit`Defer, 309, 21973078471153954923, 5/2],
+           Enabled->True,
+           Evaluator->Automatic,
+           Method->"Queued"], 
+          ButtonBox[
+           PaneSelectorBox[{False->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
+                StandardForm],
+               ImageSizeCache->{56., {0., 8.}}],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControl",
+             StripOnInput->False], True->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
+                StandardForm],
+               ImageSizeCache->{56., {0., 8.}}],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControlActive",
+             StripOnInput->False]}, Dynamic[
+             CurrentValue["MouseOver"]],
+            Alignment->Center,
+            FrameMargins->0,
+            ImageSize->{Automatic, 25}],
+           Appearance->None,
+           BaselinePosition->Baseline,
+           
+           ButtonFunction:>OutputSizeLimit`ButtonFunction[
+            OutputSizeLimit`Defer, 309, 21973078471153954923, 5 2],
+           Enabled->True,
+           Evaluator->Automatic,
+           Method->"Queued"], 
+          ButtonBox[
+           PaneSelectorBox[{False->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
+                StandardForm],
+               ImageSizeCache->{42., {0., 8.}}],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControl",
+             StripOnInput->False], True->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
+                StandardForm]],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControlActive",
+             StripOnInput->False]}, Dynamic[
+             CurrentValue["MouseOver"]],
+            Alignment->Center,
+            FrameMargins->0,
+            ImageSize->{Automatic, 25}],
+           Appearance->None,
+           BaselinePosition->Baseline,
+           
+           ButtonFunction:>OutputSizeLimit`ButtonFunction[
+            OutputSizeLimit`Defer, 309, 21973078471153954923, Infinity],
+           Enabled->True,
+           Evaluator->Automatic,
+           Method->"Queued"], 
+          ButtonBox[
+           PaneSelectorBox[{False->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
+                StandardForm],
+               ImageSizeCache->{74., {0., 8.}}],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControl",
+             StripOnInput->False], True->
+            StyleBox[
+             StyleBox[
+              DynamicBox[ToBoxes[
+                FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
+                StandardForm]],
+              StripOnInput->False,
+              DynamicUpdating->True], "OSLControlActive",
+             StripOnInput->False]}, Dynamic[
+             CurrentValue["MouseOver"]],
+            Alignment->Center,
+            FrameMargins->0,
+            ImageSize->{Automatic, 25}],
+           Appearance->None,
+           BaselinePosition->Baseline,
+           ButtonFunction:>FrontEndExecute[{
+              FrontEnd`SetOptions[
+              FrontEnd`$FrontEnd, 
+               FrontEnd`PreferencesSettings -> {"Page" -> "Advanced"}], 
+              FrontEnd`FrontEndToken["PreferencesDialog"]}],
+           Evaluator->None,
+           Method->"Preemptive"]}
+        },
+        AutoDelete->False,
+        FrameStyle->GrayLevel[0.85],
+        GridBoxDividers->{"Columns" -> {False, {True}}},
+        GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+        GridBoxSpacings->{"Columns" -> {{2}}}]}
+     },
+     DefaultBaseStyle->"Column",
+     GridBoxAlignment->{
+      "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+       "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {{False}}, "ColumnsIndexed" -> {}, "Rows" -> {{False}}, 
+       "RowsIndexed" -> {}},
+     GridBoxItemSize->{
+      "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+       "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.5599999999999999]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], 
+         Offset[1.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    BaseStyle->"OutputSizeLimit",
+    FrameMargins->{{12, 12}, {0, 15}},
+    FrameStyle->GrayLevel[0.85],
+    RoundingRadius->5,
+    StripOnInput->False],
+   Deploy,
+   DefaultBaseStyle->"Deploy"],
+  If[21973078471153954923 === $SessionID, 
+   Out[309], Message[
+     MessageName[Syntax, "noinfoker"]]; Missing["NotAvailable"]; 
+   Null]]], "Output",
+ CellChangeTimes->{3.735781514854785*^9, 
+  3.7357817505430937`*^9},ExpressionUUID->"75c1edad-7c85-4704-b9b5-\
+8a6bbc75bbf2"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"exp1", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Cases", "[", 
+       RowBox[{"raw2", ",", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", 
+          RowBox[{"fishExp", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], ",", "_"}], "}"}]}], "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{";;", ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "4"}], "}"}]}], "]"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"Length", "[", "fishExp", "]"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"nexp1", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Cases", "[", 
+        RowBox[{"raw2", ",", 
+         RowBox[{"{", 
+          RowBox[{"_", ",", "_", ",", 
+           RowBox[{"fishNexp", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", "_"}], "}"}]}], "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{";;", ",", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "4"}], "}"}]}], "]"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"Length", "[", "fishNexp", "]"}]}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.724724296792131*^9, 3.724724324074069*^9}, {
+  3.724724617564785*^9, 3.724724713319598*^9}, {3.724724848829076*^9, 
+  3.724724884564788*^9}, {3.724724917496133*^9, 3.724724947574828*^9}, {
+  3.724725497978026*^9, 
+  3.7247255024734917`*^9}},ExpressionUUID->"b99b6e85-c2c9-4a8a-979e-\
+f6da7c81599b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Size", " ", "of", " ", "bins", " ", 
+    RowBox[{"(", "days", ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"binSize", "=", "100"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"maxi", "=", 
+    RowBox[{"Floor", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Last", "[", "timeVals", "]"}], "/", "binSize"}], ",", 
+      "binSize"}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.724724992969411*^9, 3.724725001360067*^9}, {
+   3.724725172710601*^9, 3.7247252493619204`*^9}, 3.724725300636716*^9, {
+   3.724725336796851*^9, 
+   3.724725338132474*^9}},ExpressionUUID->"0b0ffd37-e99f-4362-84d6-\
+2baca7c98d0d"],
+
+Cell[BoxData["200"], "Output",
+ CellChangeTimes->{{3.724725188134177*^9, 3.724725196071478*^9}, {
+   3.72472524190832*^9, 3.724725250977241*^9}, 3.724725301080008*^9, 
+   3.724725338553483*^9, 3.724728914587435*^9, 3.724729009541637*^9, 
+   3.7247292805614862`*^9, 
+   3.7357817517296963`*^9},ExpressionUUID->"e5abcaf7-f3da-46dd-81cf-\
+b2b757cd8f25"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ConstantArray", "[", 
+  RowBox[{"0", ",", 
+   RowBox[{"{", 
+    RowBox[{"3", ",", "5"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.7247275781095247`*^9, 
+  3.724727584184579*^9}},ExpressionUUID->"5cb42be1-6c9c-48f4-a856-\
+da2200097318"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.724727584438566*^9, 3.724728914838323*^9, 
+  3.724729009773275*^9, 3.724729280648117*^9, 
+  3.735781751787158*^9},ExpressionUUID->"09786536-7c44-4f9a-893b-\
+78d14eae8694"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"exp1", "//", "Dimensions"}]], "Input",
+ CellChangeTimes->{{3.724727734297038*^9, 
+  3.724727737728895*^9}},ExpressionUUID->"c061e808-5886-40e9-b891-\
+b303a3bae7d1"],
+
+Cell[BoxData[
+ RowBox[{"{", "13", "}"}]], "Output",
+ CellChangeTimes->{3.724727737938662*^9, 3.724728914920602*^9, 
+  3.7247290098575373`*^9, 3.724729280734933*^9, 
+  3.735781751853697*^9},ExpressionUUID->"470f74cc-bd6d-4ad8-99e8-\
+d9e595e02320"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"j", " ", "cycles", " ", "through", " ", "bins"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"binSize", "=", "1000"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tmax", "=", 
+     RowBox[{"Last", "[", "timeVals", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"jmax", "=", 
+     RowBox[{"Floor", "[", 
+      RowBox[{"tmax", "/", "binSize"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"expSeries", "=", 
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{"0", ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Length", "[", "fishExp", "]"}], ",", "jmax"}], "}"}]}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "i", " ", "cycles", " ", "through", " ", "time", " ", "values", " ", "of",
+      " ", "each", " ", "bin"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"i", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"j", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"count", " ", "for", " ", "number", " ", "of", " ", "fish"}], " ",
+     "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"count", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"k", " ", "counts", " ", "over", " ", "fish", " ", "species"}], 
+    " ", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.7247168420752983`*^9, 3.7247168831625977`*^9}, {
+   3.724716920660709*^9, 3.7247170411438026`*^9}, {3.724717086169561*^9, 
+   3.724717115505692*^9}, {3.724725758362752*^9, 3.724725835763728*^9}, {
+   3.724726067467806*^9, 3.724726152524968*^9}, {3.724726315627119*^9, 
+   3.724726331854001*^9}, {3.7247268051824293`*^9, 3.724727018150453*^9}, 
+   3.724727061190463*^9, {3.724727508968224*^9, 3.724727509415207*^9}, {
+   3.724727552087751*^9, 3.7247275699532137`*^9}, {3.724727614834951*^9, 
+   3.724727635323451*^9}, {3.724727668620173*^9, 3.7247276804687243`*^9}, 
+   3.724728907648163*^9, {3.7247289953686037`*^9, 3.724728997303557*^9}, {
+   3.7247291594158773`*^9, 3.724729168444646*^9}, {3.724729274616963*^9, 
+   3.7247292753921633`*^9}},ExpressionUUID->"fc4dc09e-2095-45d8-90e1-\
+3db0105a9bc7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"For", "[", 
+   RowBox[{
+    RowBox[{"k", "=", "1"}], ",", 
+    RowBox[{"k", "\[LessEqual]", 
+     RowBox[{"Length", "[", "fishExp", "]"}]}], ",", 
+    RowBox[{"k", "++"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"For", "[", 
+      RowBox[{
+       RowBox[{"j", "=", "1"}], ",", 
+       RowBox[{"j", "\[LessEqual]", "jmax"}], ",", 
+       RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"While", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"exp1", "[", 
+             RowBox[{"[", 
+              RowBox[{"k", ",", "i", ",", "1"}], "]"}], "]"}], "\[LessEqual]", 
+            RowBox[{"j", "*", "binSize"}]}], "&&", 
+           RowBox[{"i", "\[LessEqual]", 
+            RowBox[{
+             RowBox[{"Dimensions", "[", 
+              RowBox[{"exp1", "[", 
+               RowBox[{"[", "k", "]"}], "]"}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}]}], " ", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"count", "=", 
+            RowBox[{"count", "+", 
+             RowBox[{"exp1", "[", 
+              RowBox[{"[", 
+               RowBox[{"k", ",", "i", ",", "2"}], "]"}], "]"}]}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"i", "=", 
+            RowBox[{"i", "+", "1"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"expSeries", "[", 
+          RowBox[{"[", 
+           RowBox[{"k", ",", "j"}], "]"}], "]"}], "=", "count"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"count", "=", "0"}], ";"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"i", "=", "1"}], ";"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.724725982201899*^9, 3.724726107091629*^9}, {
+   3.724726145431089*^9, 3.724726209126944*^9}, {3.72472627429818*^9, 
+   3.7247263443447*^9}, {3.7247265057884817`*^9, 3.724726507084124*^9}, {
+   3.7247266521143*^9, 3.724726671257184*^9}, {3.724726706754628*^9, 
+   3.724726706834098*^9}, {3.7247267403886213`*^9, 3.724726779428411*^9}, {
+   3.724727010180952*^9, 3.724727011075492*^9}, {3.724727351055499*^9, 
+   3.724727355709921*^9}, {3.724727392201033*^9, 3.724727404143159*^9}, {
+   3.724727683469154*^9, 3.7247277191971693`*^9}, {3.724727758031252*^9, 
+   3.7247277906230803`*^9}, {3.724727856891204*^9, 3.7247278656735983`*^9}, {
+   3.724728042904738*^9, 3.724728044590878*^9}, {3.724728179589005*^9, 
+   3.724728191835658*^9}, {3.7247282286606617`*^9, 3.724728279446094*^9}, {
+   3.724728311721055*^9, 3.72472835012982*^9}, {3.724728488622087*^9, 
+   3.724728490013159*^9}, 
+   3.724728673999115*^9},ExpressionUUID->"e0efec4c-f6a9-477e-bd90-\
+6953d8e5768b"],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{
+  3.735781769752571*^9},ExpressionUUID->"50f1e743-8b02-4229-81f2-\
+a7822ded6dcb"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"tBinSeries", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"binSize", "*", "j"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"j", ",", "1", ",", "jmax"}], "}"}]}], "]"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.7247271582264547`*^9, 3.724727236065969*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Table", "[", 
+  RowBox[{
+   RowBox[{"ListLinePlot", "[", 
+    RowBox[{
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"tBinSeries", ",", 
+        RowBox[{"expSeries", "[", 
+         RowBox[{"[", "k", "]"}], "]"}]}], "}"}], "]"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"k", ",", "1", ",", "13"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.724727240130937*^9, 3.724727264314747*^9}, {
+  3.724728410531371*^9, 3.724728428786064*^9}, {3.724728525269696*^9, 
+  3.724728531172983*^9}, {3.7247286954629498`*^9, 3.724728695526243*^9}, {
+  3.7247287785786247`*^9, 3.724728830682063*^9}, {3.7247288944403553`*^9, 
+  3.724728894860244*^9}, {3.724728942335313*^9, 3.724728975781019*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5g+uMDCO0wH0wvmP0Owi9YDqYNFD9D5deD
+6QKpXxB+x2YwfWO/qCNE/XYwf4LLV4h8xG4w/eDed6j+/RD97jIQ9VMOgvkJ
+T/9AzTsMpg9Mhbqn5iiYdjj2Eeqe4xB5r6sQfspJMK3w7j/UvtMQ+kAqhPY5
+68CADBzOo/JnXUDlT7mIyu+7BLFf9zbUfZch/lF9AuE3XYHI98LcC3HXA6GX
+EH7ZNai7JjkAAM4uSFw=
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 463324.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q4gKsHrkQOEPx9MN8hcgfALloPpAwfuQeXX
+Q+Sn3YTwOzZD5JNuQ9Vvh9B5GyF0xG4IXQOlHfZD9Ed8gvCnHATTDucuQ807
+DKEPLYbqOwqR17kENf84hD4zBUKnnISY9/0g1L7TEP7RqxC+z1kHBmTgcB6V
+P+sCKn/KRVR+3yVUfgfEnQfS30DEmyDh1PD2EdS9UHs9JkDosmsQ+twKBwDQ
+BEWG
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 75144.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5guuA0hHaYD6G9d0HFl0Po5BNQ+fUQOmE/
+hO7YDKYbJh2Fqt8OoYtWQuiI3RD6QRNUP0Rfw/bLEP6UgxD6RwPUvMMQWqAE
+QtdAzXVZADX/OIRu8ITQKSchtMUsqH1Qf8CAz1lUvsN5VP6sC6j8KRdR+X2X
+oO6Og7oP6u4DVRC66QqYflD/COreqxA6bQ+ELrsGoaXWOgAAmhs8nw==
+        
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 37887.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5gekM3hHaYD6EbOiB0wXII3TEJKr8eQk+B
+quvYDKED5kDVb4fQDJkQOmK3AwMycNgP4U+A2jvlINQ+R6h5hyG0QiqErjkK
+tbcaav5xqHk6EDrlpAOKPyJOQ+XNIbTPWTT7z6PyZ11A5U+5iMrvuwTla0Hd
+dxlCv+iC0E1XIPSBVqh7r0L94wGhy65B9bs6AAAn+DVf
+        "]]}}, {}, {}, {{}, {}}},
+    
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 2021.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5g2uQMhHaYD6FXLIbQBcshtP8+qPx6CF0I
+5XdsBtMN6Yeg6rdD6CVQcyJ2Q+igBVD9+yH0rGMQespBCC0yEWreYQjdkAih
+a45Cze2D0seh8p4QOuUkhGaYArXvNJRvAaF9zjowIAOH86j8WRdQ+VMuovL7
+LkH5BlD3XYa6owFCN12B0GtWQt17FUIr1EDosmsQekGuAwDjEjl2
+        
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 14440.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q4QRjCEdpgPoRucIXTBcqi8J1R+PVTeD0J3
+bIaKh0HVb4eq14HQEbuhfGOouv1Q/TkQespBqLwK1LzDUL4BhK45CuWbQc0/
+7sCADFJOQvlQ90achvKNILTPWVT1DudR+bMuoPKnXETl911C5XdchvAPhEPo
+pitQeT2oe69C+W4QuuwalG/vAAByXi3R
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 228.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q4MyMBhPiq/YDma/HpUfsdmNPXbUfkRu9H0
+70flTzmIZt5hVH7NUTTzj6PyU06i2XcayueA0D5nofwP9hD7z6Oqn3UBzT0X
+Ufl9l9DcdxmV33QF1b6aq6jyZdfgfAA8FyR5
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 3.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5gekEGhHaYD6WDIXTBcgjNEAcVXw+hP9RB
+6I7NEFqhDKp+O1RdJ4SO2A01Pw8qvh9CC7RB6CkHIfSBEqh5h6Hq4iF0zVEo
+Pxxq/nGofVkQOuUk1H2uUPtOQ/kKENrnrAMDMnA4j8qfdQGVP+UiKr/vEiq/
+4zKUrwWhm65A6AlVUPdehcp7Q+iyaxD6QLADAEaVM48=
+        "]]}}, {}, {}, {{}, {}}},
+    
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 808.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5g+kAohHaYD6EV0iB0wXIIvSAbKr8eQj+o
+gNAdm6HiOVD12yE0QzmEjtgNlc+H0vuh9CwIPeUgVH0Y1LzDUPcEQuiao1B5
+Dqj5x6F8KwidchJCNyRC7TsNldeA0D5nUdU7nIfyoWDWBVT+lItQvg6E7ruE
+Kt9xGZXfdAVqbiHUvVeh7o+F0GXXoPxIBwBUXTQj
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 1680.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q4QhjWEdpgP5btD6ILlDjCVEHI9lG8DoTs2
+Q/nGUPXbIXSDE4SO2A2Vj4bq3w/lm0LoKQehfD2oeYehfFsIXXMUyueAmn8c
+yleC0CknUfkRp2HuhQCfs6h8h/Oo/FkXUPlTLqLy+y6h8jsuQ/gN/hC66QpU
+XgHq3qtQvgqELrsG5ds7AAAZyitG
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 108.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5g+kA4hHaYD6EZAiF0wXII3eAFlV8PpRMg
+dMdmqPpQqPrtUL43hI7YDeUbQfXth9ACJRB6ykGo+Y5Q8w5D1RtA6JqjUHl3
+qPnHofIqEDrlJJTvA7XvNJQvAaF9zjowIAOH86j8WRdQ+VMuovL7LqHyOy6j
+urfpCoQ+EA1171WoegsIXXYNynd2AAAOLC/5
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 321.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5g+kIJhHaYD6E7WiF0wXIIHVABlV8PoRd0
+QNVthtAMKVD12yG0RCOEjtgNoZ8tgOrfD9VfBaGnHITQCnlQ8w5D1aVB6Jqj
+UPMNoeYfh9ATiiF0ykkI/SAHat9pqHo9CO1z1oEBGTicR+XPuoDKn3IRld93
+CZXfcRlqH9R9TVcg9IleqHuvQugGXwhddg2q38cBAGnfNq4=
+        
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 2163.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}], ",", 
+   GraphicsBox[{{}, {{}, {}, 
+      {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+       0.019444444444444445`], AbsoluteThickness[1.6], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQB2IQDQYO/Q5g+kAghHaYD6EZZCB0wXIoHya/HkqXQOiO
+zVD9sVD126Hq1SB0xG4onwOqbz+UXwehpxyE8kWg5h1GVV9zFMpXgZp/3IEB
+GaSchPAbHKD2nUbV73MWVb3DeVT+rAuo/CkXoXxbCN13CVW+4zIqv+kKhC9Q
+DHXvVai8HoQuuwblSzgAAG+CLQM=
+        "]]}}, {}, {}, {{}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{None, None},
+    AxesOrigin->{656.2500000000001, 0},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{None, None},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+           Part[#, 1]], 
+          (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+           Part[#, 2]]}& )}},
+    PlotRange->{{1000., 23000.}, {0, 480.}},
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.02], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.724728959069998*^9, 3.724728976318322*^9}, 
+   3.724729052860461*^9, 3.7247292125451517`*^9, 3.724729311579254*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{791, 911},
+WindowMargins->{{4, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 108, 1, 92, "Title", "ExpressionUUID" -> \
+"34e15342-341e-4092-a5a9-f1ee3eaada52"],
+Cell[CellGroupData[{
+Cell[713, 27, 108, 1, 64, "Section", "ExpressionUUID" -> \
+"e94e0fed-dbc7-4b25-a719-cfac0e761b67"],
+Cell[824, 30, 806, 21, 138, "Input", "ExpressionUUID" -> \
+"a1617743-37b0-4d3e-899c-e923f25db64d"],
+Cell[CellGroupData[{
+Cell[1655, 55, 189, 4, 32, "Input", "ExpressionUUID" -> \
+"02faa889-a128-4c87-9ef0-133651d6b9fb"],
+Cell[1847, 61, 228, 5, 32, "Output", "ExpressionUUID" -> \
+"505b7220-9bb5-4401-b274-be3200535f34"]
+}, Open  ]],
+Cell[2090, 69, 694, 20, 54, "Input", "ExpressionUUID" -> \
+"c593fd29-06f3-48a4-97e3-33afb4fba879"],
+Cell[2787, 91, 1163, 28, 96, "Input", "ExpressionUUID" -> \
+"b8c622f5-4e61-42ae-864c-a9a209dbe9f8"],
+Cell[3953, 121, 1901, 54, 201, "Input", "ExpressionUUID" -> \
+"419db23f-e8a4-42c5-9f2a-b97c28a7ead1"],
+Cell[CellGroupData[{
+Cell[5879, 179, 375, 10, 32, "Input", "ExpressionUUID" -> \
+"ca4fb2e0-19b5-42cd-9e42-01df23ba2f77"],
+Cell[6257, 191, 21579, 332, 5422, "Output", "ExpressionUUID" -> \
+"fbb3c53d-0f82-4d97-9947-15fead88c5cf"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27873, 528, 100, 1, 44, "Subsection", "ExpressionUUID" -> \
+"d349185a-7786-43b2-b452-61fc5c2dfebd"],
+Cell[27976, 531, 1024, 20, 138, "Input", "ExpressionUUID" -> \
+"5ed3397c-59c1-494a-9538-85f87f35d6c6"],
+Cell[29003, 553, 891, 17, 138, "Input", "ExpressionUUID" -> \
+"286191eb-c07b-4b61-88aa-26dc2babb331"],
+Cell[29897, 572, 263, 6, 32, "Input", "ExpressionUUID" -> \
+"84ad7d64-6347-4566-834a-1cbd4aa46f52"],
+Cell[30163, 580, 91, 1, 35, "Subsubsection", "ExpressionUUID" -> \
+"90817a51-4d23-4eab-aff9-e8ee863c72b4"],
+Cell[CellGroupData[{
+Cell[30279, 585, 106, 1, 29, "Subsubsection", "ExpressionUUID" -> \
+"7d1c0573-d289-45dc-81be-305231d8b856"],
+Cell[CellGroupData[{
+Cell[30410, 590, 186, 4, 32, "Input", "ExpressionUUID" -> \
+"4f716dd8-31ae-4660-9a64-ed0f0c078e68"],
+Cell[30599, 596, 175, 4, 32, "Output", "ExpressionUUID" -> \
+"9645e20d-0213-4871-9c46-8f83e3ab5adf"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30811, 605, 206, 5, 32, "Input", "ExpressionUUID" -> \
+"c248df3a-1f4c-40fe-b670-ad596e831d5a"],
+Cell[31020, 612, 10021, 266, 182, "Output", "ExpressionUUID" -> \
+"75c1edad-7c85-4704-b9b5-8a6bbc75bbf2"]
+}, Open  ]],
+Cell[41056, 881, 1611, 45, 138, "Input", "ExpressionUUID" -> \
+"b99b6e85-c2c9-4a8a-979e-f6da7c81599b"],
+Cell[CellGroupData[{
+Cell[42692, 930, 701, 18, 75, "Input", "ExpressionUUID" -> \
+"0b0ffd37-e99f-4362-84d6-2baca7c98d0d"],
+Cell[43396, 950, 350, 6, 32, "Output", "ExpressionUUID" -> \
+"e5abcaf7-f3da-46dd-81cf-b2b757cd8f25"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[43783, 961, 266, 7, 32, "Input", "ExpressionUUID" -> \
+"5cb42be1-6c9c-48f4-a856-da2200097318"],
+Cell[44052, 970, 516, 13, 32, "Output", "ExpressionUUID" -> \
+"09786536-7c44-4f9a-893b-78d14eae8694"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[44605, 988, 188, 4, 32, "Input", "ExpressionUUID" -> \
+"c061e808-5886-40e9-b891-b303a3bae7d1"],
+Cell[44796, 994, 246, 5, 32, "Output", "ExpressionUUID" -> \
+"470f74cc-bd6d-4ad8-99e8-d9e595e02320"]
+}, Open  ]],
+Cell[45057, 1002, 2331, 50, 306, "Input", "ExpressionUUID" -> \
+"fc4dc09e-2095-45d8-90e1-3db0105a9bc7"],
+Cell[CellGroupData[{
+Cell[47413, 1056, 2794, 63, 243, "Input", "ExpressionUUID" -> \
+"e0efec4c-f6a9-477e-bd90-6953d8e5768b"],
+Cell[50210, 1121, 137, 3, 32, "Output", "ExpressionUUID" -> \
+"50f1e743-8b02-4229-81f2-a7822ded6dcb"]
+}, Open  ]],
+Cell[50362, 1127, 302, 9, 32, "Input", "ExpressionUUID" -> \
+"ab7f53fd-4adc-4e7f-a318-2a175e72d656"],
+Cell[CellGroupData[{
+Cell[50689, 1140, 783, 17, 54, "Input", "ExpressionUUID" -> \
+"696f91fb-097a-4c28-871c-8cc634bcb674"],
+Cell[51475, 1159, 21268, 491, 703, "Output", "ExpressionUUID" -> \
+"a5d8b97d-f3c6-4749-9fea-89526808fbb9"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

@@ -1,0 +1,32 @@
+# Discrete Fish Model vary r - make r a variable
+
+# Dynamics (remember discrete form)
+x(t+1) = x*exp(r*(1-x/k)) - f*x^2/(x^2+h^2)
+
+# parameters
+par r=1
+par k=10
+par f=0
+par h = 0.75
+
+
+# initial conditions
+x(0)=10.1
+
+
+# set method to discrete
+@ meth=discrete
+
+# capture cycles of up to size nout
+@ nout=16
+
+
+@ xp=t,yp=x,xlo=0,xhi=1000,ylo=0,yhi=20, bell=0
+@ total=1000, maxstor=2000000,bounds=1000000
+
+# auto parameters
+@ ntst=150, npr=500, nmax=2000, ds=0.01, dsmin=0.001, dsmax=0.02, ncol=5
+@ parmin=0, parmax=5, epsl=0.000001, epsu=0.000001, epss=0.000001 
+@ AUTOXMIN=0.1, AUTOXMAX=5, AUTOYMIN=0, AUTOYMAX=20
+
+done
