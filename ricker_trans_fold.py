@@ -251,28 +251,28 @@ t_display = df_pspec.index.levels[2][::1].values
 
 plot_pspec = plot_pspec_grid(t_display, plot_num, 'x')
 
-#
-##------------------------------------
-### Export data / figures
-##-----------------------------------
-#
-## Export power spectrum evolution (grid plot)
-#plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
-#
-### Export the first 5 realisations to see individual behaviour
-## EWS DataFrame (includes trajectories)
-#df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
-## Power spectrum DataFrame (only empirical values)
-#df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
-#            header=True)
-#
-### Export ensemble statistics
-##df_ews_means.to_csv('data_export/'+dir_name+'/ews_ensemble_mean.csv')
-##df_ews_deviations.to_csv('data_export/'+dir_name+'/ews_ensemble_std.csv')
-#
-#
-#
-#
+
+#------------------------------------
+## Export data / figures
+#-----------------------------------
+
+# Export power spectrum evolution (grid plot)
+plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
+
+## Export the first 5 realisations to see individual behaviour
+# EWS DataFrame (includes trajectories)
+df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+# Power spectrum DataFrame (only empirical values)
+df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+            header=True)
+
+## Export ensemble statistics
+#df_ews_means.to_csv('data_export/'+dir_name+'/ews_ensemble_mean.csv')
+#df_ews_deviations.to_csv('data_export/'+dir_name+'/ews_ensemble_std.csv')
+
+
+
+
 
 
 
