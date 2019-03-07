@@ -28,7 +28,7 @@ from ews_compute import ews_compute
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_fold_ews_1'
+dir_name = 'ricker_fold_ktau'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -44,17 +44,17 @@ dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
 tmax = 1000
 tburn = 100 # burn-in period
-numSims = 5
-seed = 10 # random number generation seed
-sigma = 0.05 # noise intensity
+numSims = 2
+seed = 1 # random number generation seed
+sigma = 0.02 # noise intensity
 
 # EWS parameters
 dt2 = 1 # spacing between time-series for EWS computation
-rw = 0.25 # rolling window
-bw = 0.05 # bandwidth
-lags = [1,2,4] # autocorrelation lag times
+rw = 0.4 # rolling window
+span = 0.5 # Lowess span
+lags = [1,2,3] # autocorrelation lag times
 ews = ['var','ac','sd','cv','skew','kurt','smax','aic','cf'] # EWS to compute
-ham_length = 40 # number of data points in Hamming window
+ham_length = 80 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
 
@@ -70,9 +70,9 @@ r = 0.75 # growth rate
 k = 10 # carrying capacity
 h = 0.75 # half-saturation constant of harvesting function
 bl = 0 # bifurcation parameter (harvesting) low
-bh = 3 # bifurcation parameter (harvesting) high
+bh = 2.7 # bifurcation parameter (harvesting) high
 bcrit = 2.364 # bifurcation point (computed in Mathematica)
-x0 = 0.8 # intial condition
+x0 = 0.8 # initial condition
 
 def de_fun(x,r,k,f,h,xi):
     return x*np.exp(r*(1-x/k)+xi) - f*x**2/(x**2+h**2)
@@ -149,6 +149,7 @@ df_traj_filt = df_traj.loc[::int(dt2/dt)]
 # set up a list to store output dataframes from ews_compute- we will concatenate them at the end
 appended_ews = []
 appended_pspec = []
+appended_ktau = []
 
 # loop through realisation number
 print('\nBegin EWS computation\n')
@@ -158,7 +159,7 @@ for i in range(numSims):
         
         ews_dic = ews_compute(df_traj_filt.loc[i+1][var], 
                           roll_window = rw, 
-                          band_width = bw,
+                          span = span,
                           lag_times = lags, 
                           ews = ews,
                           ham_length = ham_length,
@@ -170,6 +171,8 @@ for i in range(numSims):
         df_ews_temp = ews_dic['EWS metrics']
         # The DataFrame of power spectra
         df_pspec_temp = ews_dic['Power spectrum']
+        # The DataFrame of ktau values
+        df_ktau_temp = ews_dic['Kendall tau']
         
         # Include a column in the DataFrames for realisation number and variable
         df_ews_temp['Realisation number'] = i+1
@@ -177,10 +180,14 @@ for i in range(numSims):
         
         df_pspec_temp['Realisation number'] = i+1
         df_pspec_temp['Variable'] = var
+        
+        df_ktau_temp['Realisation number'] = i+1
+        df_ktau_temp['Variable'] = var
                 
         # Add DataFrames to list
         appended_ews.append(df_ews_temp)
         appended_pspec.append(df_pspec_temp)
+        appended_ktau.append(df_ktau_temp)
         
     # Print status every realisation
     if np.remainder(i+1,1)==0:
@@ -189,15 +196,19 @@ for i in range(numSims):
 
 # Concatenate EWS DataFrames. Index [Realisation number, Variable, Time]
 df_ews = pd.concat(appended_ews).reset_index().set_index(['Realisation number','Variable','Time'])
+
 # Concatenate power spectrum DataFrames. Index [Realisation number, Variable, Time, Frequency]
 df_pspec = pd.concat(appended_pspec).reset_index().set_index(['Realisation number','Variable','Time','Frequency'])
+
+# Concatenate kendall tau DataFrames. Index [Realisation number, Variable]
+df_ktau = pd.concat(appended_ktau).reset_index().set_index(['Realisation number','Variable'])
 
 
 # Compute ensemble statistics of EWS over all realisations (mean, pm1 s.d.)
 ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-4 AC', 'AIC fold', 'AIC hopf', 'AIC null', 'Coherence factor']
 
-#df_ews_means = df_ews[ews_names].mean(level='Time')
-#df_ews_deviations = df_ews[ews_names].std(level='Time')
+df_ews_means = df_ews[ews_names].mean(level='Time')
+df_ews_deviations = df_ews[ews_names].std(level='Time')
 
 
 
@@ -206,16 +217,15 @@ ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-4 AC', 'AIC fold', 'AIC ho
 #-------------------------
 
 # Realisation number to plot
-plot_num = 3
+plot_num = 1
 var = 'x'
 ## Plot of trajectory, smoothing and EWS of var (x or y)
-fig1, axes = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(6,6))
+fig1, axes = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(6,6))
 df_ews.loc[plot_num,var][['State variable','Smoothing']].plot(ax=axes[0],
           title='Early warning signals for a single realisation')
 df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
-df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-4 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
+df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
 df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
-df_ews.loc[plot_num,var]['Coherence factor'].dropna().plot(ax=axes[2], secondary_y=True, legend=True)
 df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].dropna().plot(ax=axes[3],legend=True)
 
 
@@ -252,19 +262,34 @@ t_display = df_pspec.index.levels[2][::3].values
 plot_pspec = plot_pspec_grid(t_display, plot_num, 'x')
 
 
+
+
+
+
+
+
+
+
 #------------------------------------
 ## Export data / figures
 #-----------------------------------
 
-# Export power spectrum evolution (grid plot)
-plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
+## Export power spectrum evolution (grid plot)
+#plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
 
-## Export the first 5 realisations to see individual behaviour
-# EWS DataFrame (includes trajectories)
-df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
-# Power spectrum DataFrame (only empirical values)
-df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
-            header=True)
+### Export the first 5 realisations to see individual behaviour
+## EWS DataFrame (includes trajectories)
+#df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+## Power spectrum DataFrame (only empirical values)
+#df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+#            header=True)
+
+
+# Export kendall tau values
+df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
+
+
+
 
 ## Export ensemble statistics
 #df_ews_means.to_csv('data_export/'+dir_name+'/ews_ensemble_mean.csv')
