@@ -17,10 +17,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# import EWS function
-import sys
-sys.path.append('../early_warnings/')
-from ews_compute import ews_compute
+# import ewstools
+from ewstools import ewstools
 
 
 #---------------------
@@ -44,7 +42,7 @@ dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
 tmax = 1000
 tburn = 100 # burn-in period
-numSims = 5
+numSims = 2
 seed = 1 # random number generation seed
 sigma = 0.02 # noise intensity
 
@@ -139,9 +137,9 @@ df_traj.set_index(['Realisation number','Time'], inplace=True)
 
 
 
-#----------------------
-## Execute ews_compute for each realisation 
-#---------------------
+# ----------------------
+# Execute ews_compute for each realisation
+# ---------------------
 
 # Filter time-series to have time-spacing dt2
 df_traj_filt = df_traj.loc[::int(dt2/dt)]
@@ -157,7 +155,7 @@ for i in range(numSims):
     # loop through variable
     for var in ['x']:
         
-        ews_dic = ews_compute(df_traj_filt.loc[i+1][var], 
+        ews_dic = ewstools.ews_compute(df_traj_filt.loc[i+1][var], 
                           roll_window = rw,
                           smooth='Lowess',
                           span=span,
@@ -183,8 +181,8 @@ for i in range(numSims):
         
         df_pspec_temp['Realisation number'] = i+1
         df_pspec_temp['Variable'] = var
-        
-        
+
+
         df_ktau_temp['Realisation number'] = i+1
         df_ktau_temp['Variable'] = var
                 
@@ -231,7 +229,7 @@ df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
 df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
 df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
 df_ews.loc[plot_num,var]['Coherence factor'].dropna().plot(ax=axes[2], secondary_y=True, legend=True)
-df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].dropna().plot(ax=axes[3],legend=True)
+df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].plot(ax=axes[3],legend=True, marker='o')
 
 
 ## Define function to make grid plot for evolution of the power spectrum in time
@@ -242,7 +240,7 @@ def plot_pspec_grid(tVals, plot_num, var):
                   col_wrap=3,
                   sharey=False,
                   aspect=1.5,
-                  size=1.8
+                  height=1.8
                   )
 
     g.map(plt.plot, 'Frequency', 'Empirical', color='k', linewidth=2)
@@ -297,11 +295,6 @@ df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.cs
 # Export kendall tau values
 df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
 
-
-
-## Export ensemble statistics
-#df_ews_means.to_csv('data_export/'+dir_name+'/ews_ensemble_mean.csv')
-#df_ews_deviations.to_csv('data_export/'+dir_name+'/ews_ensemble_std.csv')
 
     
 

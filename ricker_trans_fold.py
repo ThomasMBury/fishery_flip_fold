@@ -17,10 +17,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# import EWS function
-import sys
-sys.path.append('../early_warnings/')
-from ews_compute import ews_compute
+# import ewstools
+from ewstools import ewstools
 
 
 #---------------------
@@ -28,7 +26,7 @@ from ews_compute import ews_compute
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_fold_ktau'
+dir_name = 'ricker_fold_test'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -157,7 +155,7 @@ for i in range(numSims):
     # loop through variable
     for var in ['x']:
         
-        ews_dic = ews_compute(df_traj_filt.loc[i+1][var], 
+        ews_dic = ewstools.ews_compute(df_traj_filt.loc[i+1][var], 
                           roll_window = rw, 
                           span = span,
                           lag_times = lags, 
@@ -165,7 +163,8 @@ for i in range(numSims):
                           ham_length = ham_length,
                           ham_offset = ham_offset,
                           pspec_roll_offset = pspec_roll_offset,
-                          upto=tcrit)
+                          upto=tcrit,
+                          sweep=False)
         
         # The DataFrame of EWS
         df_ews_temp = ews_dic['EWS metrics']
@@ -205,7 +204,7 @@ df_ktau = pd.concat(appended_ktau).reset_index().set_index(['Realisation number'
 
 
 # Compute ensemble statistics of EWS over all realisations (mean, pm1 s.d.)
-ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-4 AC', 'AIC fold', 'AIC hopf', 'AIC null', 'Coherence factor']
+ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-3 AC', 'AIC fold', 'AIC hopf', 'AIC null', 'Coherence factor']
 
 df_ews_means = df_ews[ews_names].mean(level='Time')
 df_ews_deviations = df_ews[ews_names].std(level='Time')
@@ -220,13 +219,13 @@ df_ews_deviations = df_ews[ews_names].std(level='Time')
 plot_num = 1
 var = 'x'
 ## Plot of trajectory, smoothing and EWS of var (x or y)
-fig1, axes = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(6,6))
+fig1, axes = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(6,6))
 df_ews.loc[plot_num,var][['State variable','Smoothing']].plot(ax=axes[0],
           title='Early warning signals for a single realisation')
 df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
 df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
 df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
-df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].dropna().plot(ax=axes[3],legend=True)
+df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].plot(ax=axes[3],legend=True, marker='o')
 
 
 ## Define function to make grid plot for evolution of the power spectrum in time
@@ -237,7 +236,7 @@ def plot_pspec_grid(tVals, plot_num, var):
                   col_wrap=3,
                   sharey=False,
                   aspect=1.5,
-                  size=1.8
+                  height=1.8
                   )
 
     g.map(plt.plot, 'Frequency', 'Empirical', color='k', linewidth=2)
@@ -274,26 +273,19 @@ plot_pspec = plot_pspec_grid(t_display, plot_num, 'x')
 ## Export data / figures
 #-----------------------------------
 
-## Export power spectrum evolution (grid plot)
-#plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
+# Export power spectrum evolution (grid plot)
+plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
 
-### Export the first 5 realisations to see individual behaviour
-## EWS DataFrame (includes trajectories)
-#df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
-## Power spectrum DataFrame (only empirical values)
-#df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
-#            header=True)
+## Export the first 5 realisations to see individual behaviour
+# EWS DataFrame (includes trajectories)
+df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+# Power spectrum DataFrame (only empirical values)
+df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+            header=True)
 
 
 # Export kendall tau values
 df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
-
-
-
-
-## Export ensemble statistics
-#df_ews_means.to_csv('data_export/'+dir_name+'/ews_ensemble_mean.csv')
-#df_ews_deviations.to_csv('data_export/'+dir_name+'/ews_ensemble_std.csv')
 
 
 
