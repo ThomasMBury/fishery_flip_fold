@@ -1,6 +1,7 @@
 #!/bin/bash
 
 module load python/3.7.0
+pip install -r requirements.txt
 
 mkdir -p Jobs
 mkdir -p Data
@@ -13,6 +14,6 @@ mkdir -p Data
 MAX=`cat par_table.txt | wc -l`
 
 for i in `seq 2 $MAX`; do
-	. single_job_sharc.sh $i
+	sbatch single_job_sharc.sh $i
 	sleep 1.0
 done

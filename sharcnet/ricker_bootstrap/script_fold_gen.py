@@ -81,8 +81,8 @@ ham_offset = ham_offset_in # proportion of Hamming window to offset by upon each
 pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
 sweep = sweep_in # whether to sweep over optimisation parameters
 
-print(sweep)
-print(type(sweep))
+# print(sweep)
+# print(type(sweep))
 
 # Bootstrapping parameters
 block_size = block_size_in # size of blocks used to resample time-series
@@ -315,21 +315,23 @@ df_intervals = pd.concat(list_intervals, axis=1)
 # Export data for plotting in MMA
 #–------------------------------------
 
+if not os.path.exists('fold'):
+    os.makedirs('fold')
 
 # Export EWS of original time-series
-df_ews.reset_index().to_csv('ews_orig.csv')
+df_ews.reset_index().to_csv('fold/ews_orig.csv')
 
 # Export power spectra of original time-series
-df_pspec[['Empirical']].dropna().to_csv('pspec_orig.csv')
+df_pspec[['Empirical']].dropna().to_csv('fold/pspec_orig.csv')
 
 # Export bootstrapped EWS (all samples)
-df_ews_boot[ews_export].to_csv('ews_boot.csv')
+df_ews_boot[ews_export].to_csv('fold/ews_boot.csv')
 
 # Export confidence intervals and mean of bootstrapped EWS
-df_intervals.to_csv('ews_intervals.csv')
+df_intervals.to_csv('fold/ews_intervals.csv')
 
 # Export bootstrapped pspec (for one sample)
-df_pspec_boot.to_csv('pspec_boot.csv')
+df_pspec_boot.to_csv('fold/pspec_boot.csv')
 
 
 print('Data exported')

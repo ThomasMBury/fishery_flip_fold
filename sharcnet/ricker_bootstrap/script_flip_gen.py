@@ -3,13 +3,8 @@
 """
 Created on Fri Feb  8 11:09:11 2019
 
-Script to compute bootstrapped EWS for the Ricker model going through the 
-Flip bifurcation.
-
-Run from terminal using:
-    python script_flip_gen.py rolling_window block_size
-    
-
+Compute bootstrapped EWS for the Ricker model going through the Flip bifurcation.
+Takes in parameters from command line.
 
 
 @author: Thomas Bury
@@ -23,14 +18,9 @@ import pandas as pd
 import os
 import sys
 
-# Import EWS module
-sys.path.append('../../../early_warnings')
-from ews_compute import ews_compute
 
-# Import Bootstrap module 
-sys.path.append('../../')
-from roll_bootstrap import roll_bootstrap, mean_ci
-
+# Import ewstools
+from ewstools import ewstools
 
 
 
@@ -38,13 +28,33 @@ from roll_bootstrap import roll_bootstrap, mean_ci
 # Parameters input from terminal
 #–----------------------
   
+tmax_in = int(sys.argv[1])  
+seed_in = int(sys.argv[2])
+sigma_in = float(sys.argv[3])
+span_in = float(sys.argv[4])
+rw_in = float(sys.argv[5])
+ham_length_in = int(sys.argv[6])
+ham_offset_in = float(sys.argv[7])
+sweep_in = str(sys.argv[8])=='true'
+block_size_in = int(sys.argv[9])
+bs_type_in = str(sys.argv[10])
+n_samples_in = int(sys.argv[11])
 
-block_size_in = int(sys.argv[1])  
-rw_in = float(sys.argv[2])
-
-
-print('''\nRunning Ricker-Flip script: block_size = %.2d, rw = %.2f\n'''
-% (block_size_in, rw_in))
+print('''\nRunning Ricker-Flip script with parameters: 
+tmax = %d
+seed = %d
+sigma = %.2f
+span = %.2f
+rw = %.2f
+ham_length = %d
+ham_offset = %.2f
+sweep = %s
+block_size = %d
+bs_type = %s
+n_samples = %d\n
+'''
+% (tmax_in, seed_in, sigma_in, span_in, rw_in, ham_length_in, ham_offset_in, sweep_in, block_size_in, bs_type_in, n_samples_in)
+)
 
 
 #--------------------------------
@@ -55,27 +65,30 @@ print('''\nRunning Ricker-Flip script: block_size = %.2d, rw = %.2f\n'''
 # Simulation parameters
 dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
-tmax = 400
+tmax = tmax_in
 tburn = 100 # burn-in period
-seed = 0 # random number generation seed
-sigma = 0.02 # noise intensity
+seed = seed_in # random number generation seed
+sigma = sigma_in # noise intensity
 
 
 
 # EWS parameters
-span = 0.5
+span = span_in
 rw = rw_in
 ews = ['var','ac','smax','aic']
 lags = [1,2,3] # autocorrelation lag times
-ham_length = 80 # number of data points in Hamming window
-ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
+ham_length = ham_length_in # number of data points in Hamming window
+ham_offset = ham_offset_in # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
-sweep = False # whether to sweep over optimisation parameters
+sweep = sweep_in # whether to sweep over optimisation parameters
+
+# print(sweep)
+# print(type(sweep))
 
 # Bootstrapping parameters
 block_size = block_size_in # size of blocks used to resample time-series
-bs_type = 'Stationary' # type of bootstrapping
-n_samples = 2 # number of bootstrapping samples to take
+bs_type = bs_type_in # type of bootstrapping
+n_samples = n_samples_in # number of bootstrapping samples to take
 roll_offset = 20 # rolling window offset
 
 
@@ -151,7 +164,7 @@ df_traj = pd.DataFrame(data).set_index('Time')
 series = df_traj['x']
         
 # Put into ews_compute
-ews_dic = ews_compute(series,
+ews_dic = ewstools.ews_compute(series,
                       smooth = 'Lowess',
                       span = span,
                       roll_window = rw,
@@ -190,7 +203,7 @@ print('Computing bootstrapped EWS')
 
 
 
-df_samples = roll_bootstrap(series,
+df_samples = ewstools.roll_bootstrap(series,
                    span = span,
                    roll_window = rw,
                    roll_offset = roll_offset,
@@ -224,7 +237,7 @@ for t in tVals:
         # Compute EWS for near-stationary sample series
         series_temp = df_samples.loc[t].loc[sample]['x']
         
-        ews_dic = ews_compute(series_temp,
+        ews_dic = ewstools.ews_compute(series_temp,
                           roll_window = 1, 
                           band_width = 1,
                           ews = ews,
@@ -280,7 +293,7 @@ list_intervals = []
 for i in range(len(ews_export)):
     
     # Compute mean, and confidence intervals
-    series_intervals = df_ews_boot[ews_export[i]].groupby('Time').apply(mean_ci, alpha=0.95)
+    series_intervals = df_ews_boot[ews_export[i]].groupby('Time').apply(ewstools.mean_ci, alpha=0.95)
     
     # Add to the list
     list_intervals.append(series_intervals)
@@ -316,31 +329,28 @@ df_intervals = pd.concat(list_intervals, axis=1)
 
 
 
+
 #-------------------------------------
 # Export data for plotting in MMA
 #–------------------------------------
 
-# Directory to export data to
-dir_name = 'flip_'+'block'+str(block_size)+'_rw'+str(rw).replace(".","")+'_samples'+str(n_samples)
-
-if not os.path.exists('data_export/'+dir_name):
-    os.makedirs('data_export/'+dir_name)
-
+if not os.path.exists('flip'):
+    os.makedirs('flip')
 
 # Export EWS of original time-series
-df_ews.reset_index().to_csv('data_export/'+dir_name+'/ews_orig.csv')
+df_ews.reset_index().to_csv('flip/ews_orig.csv')
 
 # Export power spectra of original time-series
-df_pspec[['Empirical']].dropna().to_csv('data_export/'+dir_name+'/pspec_orig.csv')
+df_pspec[['Empirical']].dropna().to_csv('flip/pspec_orig.csv')
 
 # Export bootstrapped EWS (all samples)
-df_ews_boot[ews_export].to_csv('data_export/'+dir_name+'/ews_boot.csv')
+df_ews_boot[ews_export].to_csv('flip/ews_boot.csv')
 
 # Export confidence intervals and mean of bootstrapped EWS
-df_intervals.to_csv('data_export/'+dir_name+'/ews_intervals.csv')
+df_intervals.to_csv('flip/ews_intervals.csv')
 
 # Export bootstrapped pspec (for one sample)
-df_pspec_boot.to_csv('data_export/'+dir_name+'/pspec_boot.csv')
+df_pspec_boot.to_csv('flip/pspec_boot.csv')
 
 
 print('Data exported')

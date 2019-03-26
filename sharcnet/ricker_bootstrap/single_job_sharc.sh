@@ -14,3 +14,4 @@
 
 
 python script_fold_gen.py `cat par_table.txt | head -n $1 | tail -n 1`
+python script_flip_gen.py `cat par_table.txt | head -n $1 | tail -n 1`

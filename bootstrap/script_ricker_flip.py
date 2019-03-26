@@ -15,21 +15,13 @@ Compute bootstrapped EWS for the Ricker model going through the Flip bifurcation
 # Import python libraries
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
 
 
-# Import EWS module
-import sys
-sys.path.append('../../early_warnings')
-from ews_compute import ews_compute
-
-# Import Bootstrap module 
-sys.path.append('../')
-from roll_bootstrap import roll_bootstrap, mean_ci
-
+# import ewstools
+from ewstools import ewstools
 
 
 # Name of directory within data_export
@@ -41,6 +33,8 @@ if not os.path.exists('data_export/'+dir_name):
 
 # Print update
 print("Compute bootstrapped EWS for the Ricker model going through the Flip bifurcation")
+
+
 
 #--------------------------------
 # Global parameters
@@ -143,7 +137,7 @@ df_traj = pd.DataFrame(data).set_index('Time')
 series = df_traj['x']
         
 # Put into ews_compute
-ews_dic = ews_compute(series,
+ews_dic = ewstools.ews_compute(series,
                       smooth = 'Lowess',
                       span = span,
                       roll_window = rw,
@@ -177,7 +171,7 @@ df_ews[['Variance']].plot()
 # Compute EWS using bootstrapping
 #–----------------------------------
 
-df_samples = roll_bootstrap(series,
+df_samples = ewstools.roll_bootstrap(series,
                    span = span,
                    roll_window = rw,
                    roll_offset = roll_offset,
@@ -211,7 +205,7 @@ for t in tVals:
         # Compute EWS for near-stationary sample series
         series_temp = df_samples.loc[t].loc[sample]['x']
         
-        ews_dic = ews_compute(series_temp,
+        ews_dic = ewstools.ews_compute(series_temp,
                           roll_window = 1, 
                           band_width = 1,
                           ews = ews,
@@ -267,7 +261,7 @@ list_intervals = []
 for i in range(len(ews_export)):
     
     # Compute mean, and confidence intervals
-    series_intervals = df_ews_boot[ews_export[i]].groupby('Time').apply(mean_ci, alpha=0.95)
+    series_intervals = df_ews_boot[ews_export[i]].groupby('Time').apply(ewstools.mean_ci, alpha=0.95)
     
     # Add to the list
     list_intervals.append(series_intervals)
@@ -369,6 +363,10 @@ df_intervals.to_csv('data_export/'+dir_name+'/ews_intervals.csv')
 
 # Export bootstrapped pspec (for one sample)
 df_pspec_boot.to_csv('data_export/'+dir_name+'/pspec_boot.csv')
+
+
+
+
 
 
 

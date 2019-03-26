@@ -1,3 +1,0 @@
-\select@language {english}
-\contentsline {section}{\numberline {1}Model Framework}{2}
-\contentsline {section}{\numberline {2}Data analysis}{3}
