@@ -176,13 +176,6 @@ df_ews = ews_dic['EWS metrics']
 df_pspec = ews_dic['Power spectrum']
 
 
-# Plot trajectory and smoothing
-df_ews[['State variable','Smoothing']].plot()
-
-# Plot variance
-df_ews[['Variance']].plot()
-
-
 
 
 print('Do bootstrapping')

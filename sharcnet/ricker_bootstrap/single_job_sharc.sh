@@ -13,5 +13,8 @@
 #SBATCH --ntasks=1
 
 
+module load python/3.7.0
+pip install -r requirements.txt
+
 python script_fold_gen.py `cat par_table.txt | head -n $1 | tail -n 1`
 python script_flip_gen.py `cat par_table.txt | head -n $1 | tail -n 1`

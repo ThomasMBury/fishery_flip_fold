@@ -1,8 +1,5 @@
 #!/bin/bash
 
-module load python/3.7.0
-pip install -r requirements.txt
-
 mkdir -p Jobs
 mkdir -p Data
 # rm Skynet
