@@ -1,0 +1,117 @@
+Collecting pandas>=0.24 (from -r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/19/74/e50234bc82c553fecdbd566d8650801e3fe2d6d8c8d940638e3d8a7c5522/pandas-0.24.2-cp36-cp36m-manylinux1_x86_64.whl
+Collecting numpy>=1.15 (from -r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/35/d5/4f8410ac303e690144f0a0603c4b8fd3b986feb2749c435f7cdbb288f17e/numpy-1.16.2-cp36-cp36m-manylinux1_x86_64.whl
+Collecting arch>=4.7 (from -r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/a2/30/a56017246790c01d6091baf1c7a419e546a7275318793f3deb2574bf4714/arch-4.8.1-cp36-cp36m-manylinux1_x86_64.whl
+Collecting lmfit>=0.9 (from -r requirements.txt (line 4))
+Collecting ewstools (from -r requirements.txt (line 5))
+  Using cached https://files.pythonhosted.org/packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl
+Collecting pytz>=2011k (from pandas>=0.24->-r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/61/28/1d3920e4d1d50b19bc5d24398a7cd85cc7b9a75a490570d5a30c57622d34/pytz-2018.9-py2.py3-none-any.whl
+Collecting python-dateutil>=2.5.0 (from pandas>=0.24->-r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/41/17/c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb/python_dateutil-2.8.0-py2.py3-none-any.whl
+Collecting statsmodels>=0.8 (from arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/85/d1/69ee7e757f657e7f527cbf500ec2d295396e5bcec873cf4eb68962c41024/statsmodels-0.9.0-cp36-cp36m-manylinux1_x86_64.whl
+Collecting cached-property>=1.5.1 (from arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/3b/86/85c1be2e8db9e13ef9a350aecd6dea292bd612fa288c2f40d035bb750ded/cached_property-1.5.1-py2.py3-none-any.whl
+Collecting scipy>=0.19 (from arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/7f/5f/c48860704092933bf1c4c1574a8de1ffd16bf4fde8bab190d747598844b2/scipy-1.2.1-cp36-cp36m-manylinux1_x86_64.whl
+Collecting six>1.10 (from lmfit>=0.9->-r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
+Collecting asteval>=0.9.12 (from lmfit>=0.9->-r requirements.txt (line 4))
+Collecting uncertainties>=3.0 (from lmfit>=0.9->-r requirements.txt (line 4))
+Collecting patsy (from statsmodels>=0.8->arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/ea/0c/5f61f1a3d4385d6bf83b83ea495068857ff8dfb89e74824c6e9eb63286d8/patsy-0.5.1-py2.py3-none-any.whl
+Installing collected packages: pytz, six, python-dateutil, numpy, pandas, patsy, statsmodels, cached-property, scipy, arch, asteval, uncertainties, lmfit, ewstools
+Successfully installed arch-4.8.1 asteval-0.9.13 cached-property-1.5.1 ewstools-0.0.3 lmfit-0.9.13 numpy-1.16.2 pandas-0.24.2 patsy-0.5.1 python-dateutil-2.8.0 pytz-2018.9 scipy-1.2.1 six-1.12.0 statsmodels-0.9.0 uncertainties-3.0.3
+
+Running Ricker-Fold script with parameters: 
+tmax = 1000
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.40
+ham_length = 40
+ham_offset = 0.50
+sweep = False
+block_size = 20
+bs_type = Stationary
+n_samples = 2
+
+
+Simulate
+Compute EWS
+Do bootstrapping
+EWS for t=399.00 complete
+EWS for t=419.00 complete
+EWS for t=439.00 complete
+EWS for t=459.00 complete
+EWS for t=479.00 complete
+EWS for t=499.00 complete
+EWS for t=519.00 complete
+EWS for t=539.00 complete
+EWS for t=559.00 complete
+EWS for t=579.00 complete
+EWS for t=599.00 complete
+EWS for t=619.00 complete
+EWS for t=639.00 complete
+EWS for t=659.00 complete
+EWS for t=679.00 complete
+EWS for t=699.00 complete
+EWS for t=719.00 complete
+EWS for t=739.00 complete
+EWS for t=759.00 complete
+EWS for t=779.00 complete
+EWS for t=799.00 complete
+EWS for t=819.00 complete
+EWS for t=839.00 complete
+EWS for t=859.00 complete
+Data exported
+
+real	1m46.719s
+user	1m43.689s
+sys	0m0.631s
+
+Running Ricker-Flip script with parameters: 
+tmax = 1000
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.40
+ham_length = 40
+ham_offset = 0.50
+sweep = False
+block_size = 20
+bs_type = Stationary
+n_samples = 2
+
+
+Computing bootstrapped EWS
+EWS for t=399.00 complete
+EWS for t=419.00 complete
+EWS for t=439.00 complete
+EWS for t=459.00 complete
+EWS for t=479.00 complete
+EWS for t=499.00 complete
+EWS for t=519.00 complete
+EWS for t=539.00 complete
+EWS for t=559.00 complete
+EWS for t=579.00 complete
+EWS for t=599.00 complete
+EWS for t=619.00 complete
+EWS for t=639.00 complete
+EWS for t=659.00 complete
+EWS for t=679.00 complete
+EWS for t=699.00 complete
+EWS for t=719.00 complete
+EWS for t=739.00 complete
+EWS for t=759.00 complete
+EWS for t=779.00 complete
+EWS for t=799.00 complete
+EWS for t=819.00 complete
+Data exported
+
+real	0m25.444s
+user	0m23.540s
+sys	0m0.717s

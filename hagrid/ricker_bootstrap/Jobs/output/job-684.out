@@ -1,0 +1,49 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"python/3.7.0"
+
+Please check the spelling or version number. Also try "module spider ..."
+
+
+
+Collecting pandas>=0.24 (from -r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/db/83/7d4008ffc2988066ff37f6a0bb6d7b60822367dcb36ba5e39aa7801fda54/pandas-0.24.2-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting numpy>=1.15 (from -r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/c4/33/8ec8dcdb4ede5d453047bbdbd01916dbaccdb63e98bba60989718f5f0876/numpy-1.16.2-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting arch>=4.7 (from -r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/05/24/98c80c9565a4e9f424cb857a34faafa8926cc079d555bdaad12efec1c490/arch-4.8.1-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting lmfit>=0.9 (from -r requirements.txt (line 4))
+Collecting ewstools (from -r requirements.txt (line 5))
+Collecting pytz>=2011k (from pandas>=0.24->-r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/61/28/1d3920e4d1d50b19bc5d24398a7cd85cc7b9a75a490570d5a30c57622d34/pytz-2018.9-py2.py3-none-any.whl
+Collecting python-dateutil>=2.5.0 (from pandas>=0.24->-r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/41/17/c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb/python_dateutil-2.8.0-py2.py3-none-any.whl
+Collecting scipy>=0.19 (from arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/81/39/f1457091d0a45a84a2bd7815e2cf6bd45d4fe240728e9ed567cbb17c8abe/scipy-1.2.1-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting statsmodels>=0.8 (from arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/ed/56/a1d32debdaba5cc7986aeeeb79e33d74ae3394eabfd008b0113368b91981/statsmodels-0.9.0-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting cached-property>=1.5.1 (from arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/3b/86/85c1be2e8db9e13ef9a350aecd6dea292bd612fa288c2f40d035bb750ded/cached_property-1.5.1-py2.py3-none-any.whl
+Collecting six>1.10 (from lmfit>=0.9->-r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
+Collecting uncertainties>=3.0 (from lmfit>=0.9->-r requirements.txt (line 4))
+Collecting asteval>=0.9.12 (from lmfit>=0.9->-r requirements.txt (line 4))
+Collecting patsy (from statsmodels>=0.8->arch>=4.7->-r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/ea/0c/5f61f1a3d4385d6bf83b83ea495068857ff8dfb89e74824c6e9eb63286d8/patsy-0.5.1-py2.py3-none-any.whl
+Installing collected packages: numpy, pytz, six, python-dateutil, pandas, scipy, patsy, statsmodels, cached-property, arch, uncertainties, asteval, lmfit, ewstools
+Successfully installed arch-4.8.1 asteval-0.9.13 cached-property-1.5.1 ewstools-0.0.3 lmfit-0.9.13 numpy-1.16.2 pandas-0.24.2 patsy-0.5.1 python-dateutil-2.8.0 pytz-2018.9 scipy-1.2.1 six-1.12.0 statsmodels-0.9.0 uncertainties-3.0.3
+Traceback (most recent call last):
+  File "../../script_fold_gen.py", line 22, in <module>
+    from ewstools import ewstools
+ModuleNotFoundError: No module named 'ewstools'
+
+real	0m0.510s
+user	0m0.456s
+sys	0m0.041s
+Traceback (most recent call last):
+  File "../../script_flip_gen.py", line 22, in <module>
+    from ewstools import ewstools
+ModuleNotFoundError: No module named 'ewstools'
+
+real	0m0.499s
+user	0m0.443s
+sys	0m0.049s

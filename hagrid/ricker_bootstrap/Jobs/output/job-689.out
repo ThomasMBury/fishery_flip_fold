@@ -1,0 +1,3 @@
+Job 689 released
+Install python modules
+slurmstepd: error: *** JOB 689 ON hpc-pr1-01 CANCELLED AT 2019-04-02T10:40:40 DUE TO NODE FAILURE, SEE SLURMCTLD LOG FOR DETAILS ***

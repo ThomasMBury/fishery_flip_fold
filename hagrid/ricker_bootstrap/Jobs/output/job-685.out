@@ -1,0 +1,105 @@
+Collecting pandas>=0.24 (from -r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/19/74/e50234bc82c553fecdbd566d8650801e3fe2d6d8c8d940638e3d8a7c5522/pandas-0.24.2-cp36-cp36m-manylinux1_x86_64.whl
+Collecting numpy>=1.15 (from -r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/35/d5/4f8410ac303e690144f0a0603c4b8fd3b986feb2749c435f7cdbb288f17e/numpy-1.16.2-cp36-cp36m-manylinux1_x86_64.whl
+Collecting arch>=4.7 (from -r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/a2/30/a56017246790c01d6091baf1c7a419e546a7275318793f3deb2574bf4714/arch-4.8.1-cp36-cp36m-manylinux1_x86_64.whl
+Collecting lmfit>=0.9 (from -r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/6c/a7/4f914aa7b2f49c61e991f277d8e3dc465834868c41ce2fed2121a7bebbfc/lmfit-0.9.13.tar.gz
+Collecting ewstools (from -r requirements.txt (line 5))
+  Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b79215f8>: Failed to establish a new connection: [Errno 113] No route to host',)': /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl
+  Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b7921470>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)')': /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl
+  Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b79216d8>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)')': /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl
+  Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b7921630>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)')': /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl
+  Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b7921588>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)')': /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl
+Exception:
+Traceback (most recent call last):
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/util/connection.py", line 83, in create_connection
+    raise err
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 852, in _validate_conn
+    conn.connect()
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connection.py", line 146, in _new_conn
+    (self.host, self.timeout))
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b7921278>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/share/python-wheels/requests-2.18.4-py2.py3-none-any.whl/requests/adapters.py", line 440, in send
+    timeout=timeout
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 668, in urlopen
+    **response_kw)
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 668, in urlopen
+    **response_kw)
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 668, in urlopen
+    **response_kw)
+  [Previous line repeated 2 more times]
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/usr/share/python-wheels/urllib3-1.22-py2.py3-none-any.whl/urllib3/util/retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Max retries exceeded with url: /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b7921278>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pip/basecommand.py", line 215, in main
+    status = self.run(options, args)
+  File "/usr/lib/python3/dist-packages/pip/commands/install.py", line 353, in run
+    wb.build(autobuilding=True)
+  File "/usr/lib/python3/dist-packages/pip/wheel.py", line 749, in build
+    self.requirement_set.prepare_files(self.finder)
+  File "/usr/lib/python3/dist-packages/pip/req/req_set.py", line 380, in prepare_files
+    ignore_dependencies=self.ignore_dependencies))
+  File "/usr/lib/python3/dist-packages/pip/req/req_set.py", line 620, in _prepare_file
+    session=self.session, hashes=hashes)
+  File "/usr/lib/python3/dist-packages/pip/download.py", line 821, in unpack_url
+    hashes=hashes
+  File "/usr/lib/python3/dist-packages/pip/download.py", line 659, in unpack_http_url
+    hashes)
+  File "/usr/lib/python3/dist-packages/pip/download.py", line 853, in _download_http_url
+    stream=True,
+  File "/usr/share/python-wheels/requests-2.18.4-py2.py3-none-any.whl/requests/sessions.py", line 521, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3/dist-packages/pip/download.py", line 386, in request
+    return super(PipSession, self).request(method, url, *args, **kwargs)
+  File "/usr/share/python-wheels/requests-2.18.4-py2.py3-none-any.whl/requests/sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/share/python-wheels/requests-2.18.4-py2.py3-none-any.whl/requests/sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/share/python-wheels/CacheControl-0.11.7-py2.py3-none-any.whl/cachecontrol/adapter.py", line 47, in send
+    resp = super(CacheControlAdapter, self).send(request, **kw)
+  File "/usr/share/python-wheels/requests-2.18.4-py2.py3-none-any.whl/requests/adapters.py", line 496, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Max retries exceeded with url: /packages/6d/3c/09b50f93db4a150ba5cfa3661e0683b9019aeb138ac0680411d7e7ebfa1e/ewstools-0.0.3-py3-none-any.whl (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f26b7921278>, 'Connection to files.pythonhosted.org timed out. (connect timeout=15)'))
+Traceback (most recent call last):
+  File "../../script_fold_gen.py", line 22, in <module>
+    from ewstools import ewstools
+ModuleNotFoundError: No module named 'ewstools'
+
+real	0m2.567s
+user	0m0.699s
+sys	0m0.426s
+Traceback (most recent call last):
+  File "../../script_flip_gen.py", line 22, in <module>
+    from ewstools import ewstools
+ModuleNotFoundError: No module named 'ewstools'
+
+real	0m0.924s
+user	0m0.597s
+sys	0m0.252s

@@ -1,0 +1,31 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"python/3.7.0"
+
+Please check the spelling or version number. Also try "module spider ..."
+
+
+
+Collecting pandas>=0.24 (from -r requirements.txt (line 1))
+  Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f845b444e90>, 'Connection to pypi.python.org timed out. (connect timeout=15)')': /simple/pandas/
+  Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f845b444fd0>, 'Connection to pypi.python.org timed out. (connect timeout=15)')': /simple/pandas/
+  Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f845b4b8150>: Failed to establish a new connection: [Errno 113] No route to host',)': /simple/pandas/
+  Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f845b4b8290>: Failed to establish a new connection: [Errno 113] No route to host',)': /simple/pandas/
+  Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f845b4b83d0>, 'Connection to pypi.python.org timed out. (connect timeout=15)')': /simple/pandas/
+  Could not find a version that satisfies the requirement pandas>=0.24 (from -r requirements.txt (line 1)) (from versions: )
+No matching distribution found for pandas>=0.24 (from -r requirements.txt (line 1))
+Traceback (most recent call last):
+  File "../../script_fold_gen.py", line 22, in <module>
+    from ewstools import ewstools
+ModuleNotFoundError: No module named 'ewstools'
+
+real	0m1.624s
+user	0m0.508s
+sys	0m0.083s
+Traceback (most recent call last):
+  File "../../script_flip_gen.py", line 22, in <module>
+    from ewstools import ewstools
+ModuleNotFoundError: No module named 'ewstools'
+
+real	0m0.498s
+user	0m0.433s
+sys	0m0.061s
