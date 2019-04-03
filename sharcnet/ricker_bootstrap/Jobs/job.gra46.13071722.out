@@ -1,0 +1,97 @@
+Looking in links: /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/avx2, /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic
+Requirement already satisfied: pandas>=0.24 in /home/tbury/.local/lib/python3.7/site-packages (from -r requirements.txt (line 1)) (0.24.1)
+Requirement already satisfied: numpy>=1.15 in /home/tbury/.local/lib/python3.7/site-packages (from -r requirements.txt (line 2)) (1.16.2)
+Requirement already satisfied: arch>=4.7 in /home/tbury/.local/lib/python3.7/site-packages (from -r requirements.txt (line 3)) (4.7.0)
+Requirement already satisfied: lmfit>=0.9 in /home/tbury/.local/lib/python3.7/site-packages (from -r requirements.txt (line 4)) (0.9.12)
+Requirement already satisfied: ewstools in /home/tbury/.local/lib/python3.7/site-packages (from -r requirements.txt (line 5)) (0.0.3)
+Requirement already satisfied: pytz>=2011k in /home/tbury/.local/lib/python3.7/site-packages (from pandas>=0.24->-r requirements.txt (line 1)) (2018.9)
+Requirement already satisfied: python-dateutil>=2.5.0 in /home/tbury/.local/lib/python3.7/site-packages (from pandas>=0.24->-r requirements.txt (line 1)) (2.8.0)
+Requirement already satisfied: statsmodels>=0.8 in /home/tbury/.local/lib/python3.7/site-packages (from arch>=4.7->-r requirements.txt (line 3)) (0.9.0)
+Requirement already satisfied: cached-property>=1.5.1 in /home/tbury/.local/lib/python3.7/site-packages (from arch>=4.7->-r requirements.txt (line 3)) (1.5.1)
+Requirement already satisfied: scipy>=0.19 in /home/tbury/.local/lib/python3.7/site-packages (from arch>=4.7->-r requirements.txt (line 3)) (1.2.1)
+Requirement already satisfied: six>1.10 in /home/tbury/.local/lib/python3.7/site-packages (from lmfit>=0.9->-r requirements.txt (line 4)) (1.12.0)
+Requirement already satisfied: asteval>=0.9.12 in /home/tbury/.local/lib/python3.7/site-packages (from lmfit>=0.9->-r requirements.txt (line 4)) (0.9.13)
+Requirement already satisfied: uncertainties>=3.0 in /home/tbury/.local/lib/python3.7/site-packages (from lmfit>=0.9->-r requirements.txt (line 4)) (3.0.3)
+Requirement already satisfied: patsy in /home/tbury/.local/lib/python3.7/site-packages (from statsmodels>=0.8->arch>=4.7->-r requirements.txt (line 3)) (0.5.1)
+
+Running Ricker-Fold script with parameters: 
+tmax = 1000
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.40
+ham_length = 80
+ham_offset = 0.50
+sweep = False
+block_size = 20
+bs_type = Stationary
+n_samples = 2
+
+
+Simulate
+Compute EWS
+Do bootstrapping
+EWS for t=399.00 complete
+EWS for t=419.00 complete
+EWS for t=439.00 complete
+EWS for t=459.00 complete
+EWS for t=479.00 complete
+EWS for t=499.00 complete
+EWS for t=519.00 complete
+EWS for t=539.00 complete
+EWS for t=559.00 complete
+EWS for t=579.00 complete
+EWS for t=599.00 complete
+EWS for t=619.00 complete
+EWS for t=639.00 complete
+EWS for t=659.00 complete
+EWS for t=679.00 complete
+EWS for t=699.00 complete
+EWS for t=719.00 complete
+EWS for t=739.00 complete
+EWS for t=759.00 complete
+EWS for t=779.00 complete
+EWS for t=799.00 complete
+EWS for t=819.00 complete
+EWS for t=839.00 complete
+EWS for t=859.00 complete
+Data exported
+
+Running Ricker-Flip script with parameters: 
+tmax = 1000
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.40
+ham_length = 80
+ham_offset = 0.50
+sweep = False
+block_size = 20
+bs_type = Stationary
+n_samples = 2
+
+
+Computing bootstrapped EWS
+EWS for t=399.00 complete
+EWS for t=419.00 complete
+EWS for t=439.00 complete
+EWS for t=459.00 complete
+EWS for t=479.00 complete
+EWS for t=499.00 complete
+EWS for t=519.00 complete
+EWS for t=539.00 complete
+EWS for t=559.00 complete
+EWS for t=579.00 complete
+EWS for t=599.00 complete
+EWS for t=619.00 complete
+EWS for t=639.00 complete
+EWS for t=659.00 complete
+EWS for t=679.00 complete
+EWS for t=699.00 complete
+EWS for t=719.00 complete
+EWS for t=739.00 complete
+EWS for t=759.00 complete
+EWS for t=779.00 complete
+EWS for t=799.00 complete
+EWS for t=819.00 complete
+Data exported

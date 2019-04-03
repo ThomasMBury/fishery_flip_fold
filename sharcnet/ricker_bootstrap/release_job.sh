@@ -1,10 +1,8 @@
 #!/bin/bash
 
 mkdir -p Jobs
-mkdir -p Data
-# rm Skynet
+mkdir -p Jobs/output
 
-# make
 
 . par_table_generator.sh
 

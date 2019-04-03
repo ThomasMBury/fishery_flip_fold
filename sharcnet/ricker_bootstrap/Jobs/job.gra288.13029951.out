@@ -1,0 +1,65 @@
+Could not open requirements file: [Errno 2] No such file or directory: '--user'
+
+Running Ricker-Fold script with parameters: 
+tmax = 1000
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.40
+ham_length = 40
+ham_offset = 0.50
+sweep = False
+block_size = 20
+bs_type = Stationary
+n_samples = 2
+
+
+Simulate
+Compute EWS
+Traceback (most recent call last):
+  File "script_fold_gen.py", line 180, in <module>
+    df_ews[['State variable','Smoothing']].plot()
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 2939, in __call__
+    sort_columns=sort_columns, **kwds)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 1970, in plot_frame
+    **kwds)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 1796, in _plot
+    plot_obj = klass(data, subplots=subplots, ax=ax, kind=kind, **kwds)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 947, in __init__
+    MPLPlot.__init__(self, data, **kwargs)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 98, in __init__
+    _raise_if_no_mpl()
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 48, in _raise_if_no_mpl
+    raise ImportError("matplotlib is required for plotting.")
+ImportError: matplotlib is required for plotting.
+
+Running Ricker-Flip script with parameters: 
+tmax = 1000
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.40
+ham_length = 40
+ham_offset = 0.50
+sweep = False
+block_size = 20
+bs_type = Stationary
+n_samples = 2
+
+
+Traceback (most recent call last):
+  File "script_flip_gen.py", line 187, in <module>
+    df_ews[['State variable','Smoothing']].plot()
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 2939, in __call__
+    sort_columns=sort_columns, **kwds)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 1970, in plot_frame
+    **kwds)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 1796, in _plot
+    plot_obj = klass(data, subplots=subplots, ax=ax, kind=kind, **kwds)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 947, in __init__
+    MPLPlot.__init__(self, data, **kwargs)
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 98, in __init__
+    _raise_if_no_mpl()
+  File "/home/tbury/.local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 48, in _raise_if_no_mpl
+    raise ImportError("matplotlib is required for plotting.")
+ImportError: matplotlib is required for plotting.
