@@ -1,0 +1,80 @@
+Job 3383 released
+Install python modules
+Collect parameters from terminal
+
+Running Ricker-Fold script with parameters: 
+tmax = 500
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.20
+ham_length = 40
+ham_offset = 0.50
+sweep = True
+block_size = 40
+bs_type = Stationary
+n_samples = 100
+
+
+Simulate
+Compute EWS
+Do bootstrapping
+EWS for t=99.00 complete
+EWS for t=119.00 complete
+EWS for t=139.00 complete
+EWS for t=159.00 complete
+EWS for t=179.00 complete
+EWS for t=199.00 complete
+EWS for t=219.00 complete
+EWS for t=239.00 complete
+EWS for t=259.00 complete
+EWS for t=279.00 complete
+EWS for t=299.00 complete
+EWS for t=319.00 complete
+EWS for t=339.00 complete
+EWS for t=359.00 complete
+EWS for t=379.00 complete
+EWS for t=399.00 complete
+EWS for t=419.00 complete
+Data exported
+
+real	494m17.574s
+user	493m42.871s
+sys	0m11.465s
+
+Running Ricker-Flip script with parameters: 
+tmax = 500
+seed = 0
+sigma = 0.02
+span = 0.50
+rw = 0.20
+ham_length = 40
+ham_offset = 0.50
+sweep = True
+block_size = 40
+bs_type = Stationary
+n_samples = 100
+
+
+Computing bootstrapped EWS
+EWS for t=99.00 complete
+EWS for t=119.00 complete
+EWS for t=139.00 complete
+EWS for t=159.00 complete
+EWS for t=179.00 complete
+EWS for t=199.00 complete
+EWS for t=219.00 complete
+EWS for t=239.00 complete
+EWS for t=259.00 complete
+EWS for t=279.00 complete
+EWS for t=299.00 complete
+EWS for t=319.00 complete
+EWS for t=339.00 complete
+EWS for t=359.00 complete
+EWS for t=379.00 complete
+EWS for t=399.00 complete
+Data exported
+
+real	82m41.913s
+user	82m31.808s
+sys	0m2.577s

@@ -4,14 +4,14 @@ rm par_table.txt
 touch par_table.txt
 
 declare -a TMAX_VALS=(500 1000);
-declare -a SEED_VALS=(0);
-declare -a SIGMA_VALS=(0.02);
+declare -a SEED_VALS=(1 2 3);
+declare -a SIGMA_VALS=(0.02 0.04);
 declare -a SPAN_VALS=(0.5);
-declare -a RW_VALS=(0.2 0.4);
+declare -a RW_VALS=(0.4);
 declare -a HAM_LENGTH_VALS=(40 80);
 declare -a HAM_OFFSET_VALS=(0.5);
 declare -a SWEEP_VALS=('true');
-declare -a BLOCK_SIZE_VALS=(20 40);
+declare -a BLOCK_SIZE_VALS=(20);
 declare -a BS_TYPE_VALS=('Stationary');
 declare -a N_SAMPLES_VALS=(100);
 
