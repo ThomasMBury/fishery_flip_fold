@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      8252,        217]
-NotebookOptionsPosition[      7031,        180]
-NotebookOutlinePosition[      7389,        196]
-CellTagsIndexPosition[      7346,        193]
+NotebookDataLength[      7067,        187]
+NotebookOptionsPosition[      6080,        156]
+NotebookOutlinePosition[      6439,        172]
+CellTagsIndexPosition[      6396,        169]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -37,39 +37,20 @@ Cell[BoxData[
     "\"\</Users/tb460/Library/Mobile \
 Documents/com~apple~CloudDocs/Research/critical_transitions_18/fisheries/\
 hagrid/ricker_bootstrap/Jobs\>\"", "]"}], ";"}]}]], "Input",
- CellChangeTimes->{{3.763377931828123*^9, 
-  3.763377975460402*^9}},ExpressionUUID->"84b40b44-aeeb-4f67-bfc9-\
+ CellChangeTimes->{{3.763377931828123*^9, 3.763377975460402*^9}, {
+  3.763470536506126*^9, 
+  3.763470540622682*^9}},ExpressionUUID->"84b40b44-aeeb-4f67-bfc9-\
 0a4fd4629773"],
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"jobMin", "=", "3382"}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"jobMin", "=", "6549"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"jobMax", "=", "3397"}], ";"}]}], "Input",
- CellChangeTimes->{{3.7633780121816483`*^9, 
-  3.76337802851788*^9}},ExpressionUUID->"d11353be-8e29-4dab-979c-\
+  RowBox[{"jobMax", "=", "6560"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.7633780121816483`*^9, 3.76337802851788*^9}, {
+  3.763470571560341*^9, 3.763470609807776*^9}, {3.7636453803626223`*^9, 
+  3.7636453876722307`*^9}},ExpressionUUID->"d11353be-8e29-4dab-979c-\
 c8a69e11fddd"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"Import", "[", 
-  RowBox[{"\"\<job-\>\"", "<>", 
-   RowBox[{"ToString", "[", "jobMin", "]"}]}], "]"}]], "Input",ExpressionUUID-\
->"16771dcb-77b8-4bcc-ab8b-93489bd6d321"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{"\<\"flip/ews_boot.csv\"\>", ",", "\<\"flip/ews_intervals.csv\"\>", 
-   ",", "\<\"flip/ews_orig.csv\"\>", ",", "\<\"flip/pspec_boot.csv\"\>", 
-   ",", "\<\"flip/pspec_orig.csv\"\>", ",", "\<\"fold/ews_boot.csv\"\>", 
-   ",", "\<\"fold/ews_intervals.csv\"\>", ",", "\<\"fold/ews_orig.csv\"\>", 
-   ",", "\<\"fold/pspec_boot.csv\"\>", ",", "\<\"fold/pspec_orig.csv\"\>", 
-   ",", "\<\"pars.txt\"\>"}], "}"}]], "Output",
- CellChangeTimes->{
-  3.763378314792179*^9},ExpressionUUID->"112b5f5d-316e-4cba-b7fe-\
-975eb5802627"]
-}, Open  ]],
 
 Cell[BoxData[
  RowBox[{
@@ -117,38 +98,30 @@ Cell[BoxData[
     {"\<\"job_number\"\>", "\<\"tmax\"\>", "\<\"seed\"\>", "\<\"sigma\"\>", "\
 \<\"span\"\>", "\<\"rw\"\>", "\<\"ham_length\"\>", "\<\"ham_offset\"\>", \
 "\<\"sweep\"\>", "\<\"block_size\"\>", "\<\"bs_type\"\>", "\<\"n_samples\"\>"},
-    {"3382", "500", "0", "0.02`", "0.5`", "0.2`", "40", 
+    {"6549", "500", "4", "0.04`", "0.5`", "0.4`", "40", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3383", "500", "0", "0.02`", "0.5`", "0.2`", "40", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3384", "500", "0", "0.02`", "0.5`", "0.2`", "80", 
+    {"6550", "500", "4", "0.04`", "0.5`", "0.4`", "80", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3385", "500", "0", "0.02`", "0.5`", "0.2`", "80", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3386", "500", "0", "0.02`", "0.5`", "0.4`", "40", 
+    {"6551", "500", "5", "0.04`", "0.5`", "0.4`", "40", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3387", "500", "0", "0.02`", "0.5`", "0.4`", "40", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3388", "500", "0", "0.02`", "0.5`", "0.4`", "80", 
+    {"6552", "500", "5", "0.04`", "0.5`", "0.4`", "80", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3389", "500", "0", "0.02`", "0.5`", "0.4`", "80", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3390", "1000", "0", "0.02`", "0.5`", "0.2`", "40", 
+    {"6553", "500", "6", "0.04`", "0.5`", "0.4`", "40", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3391", "1000", "0", "0.02`", "0.5`", "0.2`", "40", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3392", "1000", "0", "0.02`", "0.5`", "0.2`", "80", 
+    {"6554", "500", "6", "0.04`", "0.5`", "0.4`", "80", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3393", "1000", "0", "0.02`", "0.5`", "0.2`", "80", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3394", "1000", "0", "0.02`", "0.5`", "0.4`", "40", 
+    {"6555", "1000", "4", "0.04`", "0.5`", "0.4`", "40", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3395", "1000", "0", "0.02`", "0.5`", "0.4`", "40", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"},
-    {"3396", "1000", "0", "0.02`", "0.5`", "0.4`", "80", 
+    {"6556", "1000", "4", "0.04`", "0.5`", "0.4`", "80", 
      "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
-    {"3397", "1000", "0", "0.02`", "0.5`", "0.4`", "80", 
-     "0.5`", "\<\"true\"\>", "40", "\<\"Stationary\"\>", "100"}
+    {"6557", "1000", "5", "0.04`", "0.5`", "0.4`", "40", 
+     "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
+    {"6558", "1000", "5", "0.04`", "0.5`", "0.4`", "80", 
+     "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
+    {"6559", "1000", "6", "0.04`", "0.5`", "0.4`", "40", 
+     "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"},
+    {"6560", "1000", "6", "0.04`", "0.5`", "0.4`", "80", 
+     "0.5`", "\<\"true\"\>", "20", "\<\"Stationary\"\>", "100"}
    },
    GridBoxAlignment->{
     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
@@ -162,24 +135,27 @@ Cell[BoxData[
        Offset[0.2]}, "RowsIndexed" -> {}}],
   Function[BoxForm`e$, 
    TableForm[BoxForm`e$]]]], "Output",
- CellChangeTimes->{
-  3.763378347819406*^9},ExpressionUUID->"49c2ee5d-877a-4499-8d83-\
-af41ee8f1670"]
+ CellChangeTimes->{3.763378347819406*^9, 3.763470635472289*^9, 
+  3.7634707489386187`*^9, 
+  3.763645399493238*^9},ExpressionUUID->"83ef88d2-2f70-4207-9fa8-\
+72274c18fa1e"]
 }, Open  ]],
 
 Cell[BoxData[
  RowBox[{
   RowBox[{"Export", "[", 
-   RowBox[{"\"\<../../../figures/bootstrap/pars.png\>\"", ",", 
+   RowBox[{"\"\<../../../figures/bootstrap/hagrid_sess3/pars.png\>\"", ",", 
     RowBox[{"parTable", "//", "TableForm"}]}], "]"}], ";"}]], "Input",
  CellChangeTimes->{{3.763378374211154*^9, 3.763378376157877*^9}, {
   3.763378408918116*^9, 3.763378414060843*^9}, {3.76337849276015*^9, 
-  3.763378504624193*^9}},ExpressionUUID->"2cb98e37-38a0-421c-a87b-\
+  3.763378504624193*^9}, {3.763470628497637*^9, 3.763470630568881*^9}, {
+  3.76364539596964*^9, 
+  3.763645396070861*^9}},ExpressionUUID->"2cb98e37-38a0-421c-a87b-\
 276774276eb7"]
 }, Open  ]]
 },
-WindowSize->{808, 610},
-WindowMargins->{{Automatic, -1087}, {-5, Automatic}},
+WindowSize->{1175, 727},
+WindowMargins->{{Automatic, -1366}, {Automatic, 60}},
 FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
 2017)",
 StyleDefinitions->"Default.nb"
@@ -198,30 +174,22 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[580, 22, 188, 3, 65, "Chapter", "ExpressionUUID" -> \
 "a289d1b9-0a6b-4a44-acce-003b215351f4"],
-Cell[771, 27, 523, 14, 117, "Input", "ExpressionUUID" -> \
+Cell[771, 27, 572, 15, 75, "Input", "ExpressionUUID" -> \
 "84b40b44-aeeb-4f67-bfc9-0a4fd4629773"],
-Cell[1297, 43, 280, 7, 54, "Input", "ExpressionUUID" -> \
+Cell[1346, 44, 379, 8, 54, "Input", "ExpressionUUID" -> \
 "d11353be-8e29-4dab-979c-c8a69e11fddd"],
-Cell[CellGroupData[{
-Cell[1602, 54, 192, 4, 32, "Input", "ExpressionUUID" -> \
-"16771dcb-77b8-4bcc-ab8b-93489bd6d321"],
-Cell[1797, 60, 558, 10, 75, "Output", "ExpressionUUID" -> \
-"112b5f5d-316e-4cba-b7fe-975eb5802627"]
-}, Open  ]],
-Cell[2370, 73, 1209, 31, 138, "Input", "ExpressionUUID" -> \
+Cell[1728, 54, 1209, 31, 117, "Input", "ExpressionUUID" -> \
 "680ac2dd-4683-4262-86e6-9691224c22f8"],
 Cell[CellGroupData[{
-Cell[3604, 108, 191, 4, 32, "Input", "ExpressionUUID" -> \
+Cell[2962, 89, 191, 4, 32, "Input", "ExpressionUUID" -> \
 "b5184f16-0ad2-4a0d-984a-04810970487a"],
-Cell[3798, 114, 2798, 52, 330, "Output", "ExpressionUUID" -> \
-"49c2ee5d-877a-4499-8d83-af41ee8f1670"]
+Cell[3156, 95, 2379, 45, 258, "Output", "ExpressionUUID" -> \
+"83ef88d2-2f70-4207-9fa8-72274c18fa1e"]
 }, Open  ]],
-Cell[6611, 169, 404, 8, 32, "Input", "ExpressionUUID" -> \
+Cell[5550, 143, 514, 10, 32, "Input", "ExpressionUUID" -> \
 "2cb98e37-38a0-421c-a87b-276774276eb7"]
 }, Open  ]]
 }
 ]
 *)
-
-(* End of internal cache information *)
 

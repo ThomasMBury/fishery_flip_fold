@@ -1,0 +1,2 @@
+tmax seed sigma span rw ham_length ham_offset sweep block_size bs_type n_samples
+500 2 0.02 0.5 0.4 80 0.5 true 20 Stationary 100

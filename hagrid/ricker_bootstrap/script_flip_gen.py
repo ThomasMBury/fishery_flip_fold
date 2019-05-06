@@ -335,7 +335,7 @@ df_ews.reset_index().to_csv('flip/ews_orig.csv')
 df_pspec[['Empirical']].dropna().to_csv('flip/pspec_orig.csv')
 
 # Export bootstrapped EWS (all samples)
-df_ews_boot[ews_export].to_csv('flip/ews_boot.csv')
+# df_ews_boot[ews_export].to_csv('flip/ews_boot.csv')
 
 # Export confidence intervals and mean of bootstrapped EWS
 df_intervals.to_csv('flip/ews_intervals.csv')
