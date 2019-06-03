@@ -1,0 +1,70 @@
+Job 52665 released
+Install python modules
+Collect parameters from terminal
+
+Running Ricker-Fold script with parameters: 
+tmax = 500
+seed = 63
+sigma = 0.04
+span = 0.50
+rw = 0.40
+ham_length = 40
+ham_offset = 0.50
+sweep = True
+block_size = 20
+bs_type = Stationary
+n_samples = 100
+
+
+Simulate
+Compute EWS
+Do bootstrapping
+EWS for t=199.00 complete
+EWS for t=219.00 complete
+EWS for t=239.00 complete
+EWS for t=259.00 complete
+EWS for t=279.00 complete
+EWS for t=299.00 complete
+EWS for t=319.00 complete
+EWS for t=339.00 complete
+EWS for t=359.00 complete
+EWS for t=379.00 complete
+EWS for t=399.00 complete
+EWS for t=419.00 complete
+Data exported
+
+real	311m27.250s
+user	254m8.821s
+sys	0m4.049s
+
+Running Ricker-Flip script with parameters: 
+tmax = 500
+seed = 63
+sigma = 0.04
+span = 0.50
+rw = 0.40
+ham_length = 40
+ham_offset = 0.50
+sweep = True
+block_size = 20
+bs_type = Stationary
+n_samples = 100
+
+
+Computing bootstrapped EWS
+EWS for t=199.00 complete
+EWS for t=219.00 complete
+EWS for t=239.00 complete
+EWS for t=259.00 complete
+EWS for t=279.00 complete
+EWS for t=299.00 complete
+EWS for t=319.00 complete
+EWS for t=339.00 complete
+EWS for t=359.00 complete
+EWS for t=379.00 complete
+EWS for t=399.00 complete
+Data exported
+
+real	75m25.836s
+user	43m25.367s
+sys	0m1.505s
