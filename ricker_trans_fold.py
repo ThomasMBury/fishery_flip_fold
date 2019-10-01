@@ -18,8 +18,7 @@ import seaborn as sns
 import os
 
 # import ewstools
-from ewstools import ewstools
-
+import ewstools
 
 #---------------------
 # Directory for data output
@@ -40,10 +39,10 @@ if not os.path.exists('data_export/'+dir_name):
 # Simulation parameters
 dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
-tmax = 1000
+tmax = 500
 tburn = 100 # burn-in period
-numSims = 2
-seed = 1 # random number generation seed
+numSims = 20
+seed = 100 # random number generation seed
 sigma = 0.02 # noise intensity
 
 # EWS parameters
@@ -51,10 +50,10 @@ dt2 = 1 # spacing between time-series for EWS computation
 rw = 0.4 # rolling window
 span = 0.5 # Lowess span
 lags = [1,2,3] # autocorrelation lag times
-ews = ['var','ac','sd','cv','skew','kurt','smax','aic','cf'] # EWS to compute
-ham_length = 80 # number of data points in Hamming window
+ews = ['var','ac','sd','cv','skew','kurt','smax','cf'] # EWS to compute
+ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
-pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
+pspec_roll_offset = 20 # offset for rolling windsow when doing spectrum metrics
 
 
 #----------------------------------
@@ -102,7 +101,7 @@ for j in range(numSims):
     
     # Create brownian increments (s.d. sqrt(dt))
     dW_burn = np.random.normal(loc=0, scale=sigma*np.sqrt(dt), size = int(tburn/dt))
-    dW = np.random.normal(loc=0, scale=sigma*np.sqrt(dt), size = len(t))
+    dW = np.random.normal(loc=0, scale=sigma*np.sqrt(dt), size = len(t/dt))
     
     # Run burn-in period on x0
     for i in range(int(tburn/dt)):
@@ -155,8 +154,9 @@ for i in range(numSims):
     # loop through variable
     for var in ['x']:
         
-        ews_dic = ewstools.ews_compute(df_traj_filt.loc[i+1][var], 
-                          roll_window = rw, 
+        ews_dic = ewstools.core.ews_compute(df_traj_filt.loc[i+1][var], 
+                          roll_window = rw,
+                          smooth='Lowess',
                           span = span,
                           lag_times = lags, 
                           ews = ews,
@@ -204,10 +204,10 @@ df_ktau = pd.concat(appended_ktau).reset_index().set_index(['Realisation number'
 
 
 # Compute ensemble statistics of EWS over all realisations (mean, pm1 s.d.)
-ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-3 AC', 'AIC fold', 'AIC hopf', 'AIC null', 'Coherence factor']
+#ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-3 AC', 'AIC fold', 'AIC hopf', 'AIC null', 'Coherence factor']
 
-df_ews_means = df_ews[ews_names].mean(level='Time')
-df_ews_deviations = df_ews[ews_names].std(level='Time')
+#df_ews_means = df_ews[ews_names].mean(level='Time')
+#df_ews_deviations = df_ews[ews_names].std(level='Time')
 
 
 
@@ -215,17 +215,26 @@ df_ews_deviations = df_ews[ews_names].std(level='Time')
 # Plots to visualise EWS
 #-------------------------
 
-# Realisation number to plot
-plot_num = 1
-var = 'x'
-## Plot of trajectory, smoothing and EWS of var (x or y)
-fig1, axes = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(6,6))
-df_ews.loc[plot_num,var][['State variable','Smoothing']].plot(ax=axes[0],
-          title='Early warning signals for a single realisation')
-df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
-df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
-df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
-df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].plot(ax=axes[3],legend=True, marker='o')
+# Define function to make plot of eWS and trajectory
+def plot_traj(plot_num, var):
+    
+    ## Plot of trajectory, smoothing and EWS of var (x or y)
+    fig1, axes = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(4,4))
+    df_ews.loc[plot_num,var][['State variable','Smoothing']].plot(ax=axes[0],
+              title='Early warning signals for a single realisation')
+    df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
+    df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
+    df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
+    #df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].plot(ax=axes[3],legend=True, marker='o')
+    axes[0].set_ylabel('Population')
+    axes[0].legend()
+    axes[2].set_xlim(0,tmax)
+
+# Make plots
+plot_traj(1,'x')
+plot_traj(2,'x')
+plot_traj(3,'x')
+
 
 
 ## Define function to make grid plot for evolution of the power spectrum in time
@@ -240,9 +249,9 @@ def plot_pspec_grid(tVals, plot_num, var):
                   )
 
     g.map(plt.plot, 'Frequency', 'Empirical', color='k', linewidth=2)
-    g.map(plt.plot, 'Frequency', 'Fit fold', color='b', linestyle='dashed', linewidth=1)
-    g.map(plt.plot, 'Frequency', 'Fit hopf', color='r', linestyle='dashed', linewidth=1)
-    g.map(plt.plot, 'Frequency', 'Fit null', color='g', linestyle='dashed', linewidth=1)
+#    g.map(plt.plot, 'Frequency', 'Fit fold', color='b', linestyle='dashed', linewidth=1)
+#    g.map(plt.plot, 'Frequency', 'Fit hopf', color='r', linestyle='dashed', linewidth=1)
+#    g.map(plt.plot, 'Frequency', 'Fit null', color='g', linestyle='dashed', linewidth=1)
     # Axes properties
     axes = g.axes
     # Set y labels
@@ -257,35 +266,35 @@ def plot_pspec_grid(tVals, plot_num, var):
 
 #  Choose time values at which to display power spectrum
 t_display = df_pspec.index.levels[2][::3].values
-
-plot_pspec = plot_pspec_grid(t_display, plot_num, 'x')
-
+plot_pspec = plot_pspec_grid(t_display, 1, 'x')
 
 
-
-
-
+# Box plot to visualise kendall tau values
+plt.figure()
+df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
 
 
 
 
-#------------------------------------
-## Export data / figures
-#-----------------------------------
-
-# Export power spectrum evolution (grid plot)
-plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
-
-## Export the first 5 realisations to see individual behaviour
-# EWS DataFrame (includes trajectories)
-df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
-# Power spectrum DataFrame (only empirical values)
-df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
-            header=True)
-
-
-# Export kendall tau values
-df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
+#
+#
+##------------------------------------
+### Export data / figures
+##-----------------------------------
+#
+## Export power spectrum evolution (grid plot)
+#plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
+#
+### Export the first 5 realisations to see individual behaviour
+## EWS DataFrame (includes trajectories)
+#df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+## Power spectrum DataFrame (only empirical values)
+#df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+#            header=True)
+#
+#
+## Export kendall tau values
+#df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
 
 
 

@@ -19,7 +19,6 @@ import seaborn as sns
 import os
 
 
-
 # import ewstools
 from ewstools import ewstools
 
@@ -43,7 +42,7 @@ print("Compute bootstrapped EWS for the Ricker model going through the Fold bifu
 # Simulation parameters
 dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
-tmax = 1000
+tmax = 500
 tburn = 100 # burn-in period
 seed = 0 # random number generation seed
 sigma = 0.02 # noise intensity
@@ -53,7 +52,7 @@ span = 0.5
 rw = 0.4
 ews = ['var','ac','smax','aic']
 lags = [1,2,3] # autocorrelation lag times
-ham_length = 80 # number of data points in Hamming window
+ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
 sweep = False # during optimisation, sweep through initialisation parameters
@@ -62,7 +61,7 @@ sweep = False # during optimisation, sweep through initialisation parameters
 # Bootstrapping parameters
 block_size = 20 # size of blocks used to resample time-series
 bs_type = 'Stationary' # type of bootstrapping
-n_samples = 2 # number of bootstrapping samples to take
+n_samples = 100 # number of bootstrapping samples to take
 roll_offset = 20 # rolling window offset
 
 
@@ -125,7 +124,6 @@ df_traj = pd.DataFrame(data).set_index('Time')
 
 
 
-
 #--------------------------------
 # Compute EWS without bootstrapping
 #-------------------------------------
@@ -155,9 +153,6 @@ df_pspec = ews_dic['Power spectrum']
 # Plot trajectory and smoothing
 df_ews[['State variable','Smoothing']].plot()
 
-# Plot variance
-df_ews[['Variance']].plot()
-
 
 
 
@@ -171,7 +166,7 @@ df_samples = ewstools.roll_bootstrap(series,
                    span = span,
                    roll_window = rw,
                    roll_offset = roll_offset,
-                   upto = tcrit,
+                   upto = 0.9*tcrit,
                    n_samples = n_samples,
                    bs_type = bs_type,
                    block_size = block_size
@@ -282,6 +277,7 @@ data = df_ews_boot.reset_index().melt(id_vars = 'Time',
                          value_vars = ('Variance'),
                          var_name = 'EWS',
                          value_name = 'Magnitude')
+
 # Make plot with error bars
 var_plot = sns.relplot(x="Time", 
             y="Magnitude",
@@ -297,7 +293,7 @@ data = df_ews_boot.reset_index().melt(id_vars = 'Time',
                          var_name = 'EWS',
                          value_name = 'Magnitude')
 # Make plot with error bars
-var_plot = sns.relplot(x="Time", 
+smax_plot = sns.relplot(x="Time", 
             y="Magnitude",
             hue="EWS", 
             kind="line", 

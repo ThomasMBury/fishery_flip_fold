@@ -5,7 +5,7 @@ Created on Tue Nov 20 16:41:47 2018
 
 @author: Thomas Bury
 
-Code to simulate many trajectories of the Ricker model crossing the Flip bifurcation
+Code to simulate multiple trajectories of the Ricker model crossing the Flip bifurcation
 and evaluate EWS.
 
 """
@@ -18,7 +18,7 @@ import seaborn as sns
 import os
 
 # import ewstools
-from ewstools import ewstools
+import ewstools
 
 
 #---------------------
@@ -26,7 +26,7 @@ from ewstools import ewstools
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_flip_test'
+dir_name = 'ricker_flip_ews'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -40,9 +40,9 @@ if not os.path.exists('data_export/'+dir_name):
 # Simulation parameters
 dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
-tmax = 1000
+tmax = 500
 tburn = 100 # burn-in period
-numSims = 2
+numSims = 20
 seed = 1 # random number generation seed
 sigma = 0.02 # noise intensity
 
@@ -51,8 +51,8 @@ dt2 = 1 # spacing between time-series for EWS computation
 rw = 0.4 # rolling window
 span = 0.5 # Lowess span
 lags = [1,2,3] # autocorrelation lag times
-ews = ['var','ac','sd','cv','skew','kurt','smax','aic','cf'] # EWS to compute
-ham_length = 80 # number of data points in Hamming window
+ews = ['var','ac','sd','cv','skew','kurt','smax','cf','aic'] # EWS to compute
+ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
 
@@ -155,7 +155,7 @@ for i in range(numSims):
     # loop through variable
     for var in ['x']:
         
-        ews_dic = ewstools.ews_compute(df_traj_filt.loc[i+1][var], 
+        ews_dic = ewstools.core.ews_compute(df_traj_filt.loc[i+1][var], 
                           roll_window = rw,
                           smooth='Lowess',
                           span=span,
@@ -222,7 +222,7 @@ ews_names = ['Variance', 'Lag-1 AC', 'Lag-2 AC', 'Lag-4 AC', 'AIC fold', 'AIC ho
 plot_num = 1
 var = 'x'
 ## Plot of trajectory, smoothing and EWS of var (x or y)
-fig1, axes = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(6,6))
+fig1, axes = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(4,4))
 df_ews.loc[plot_num,var][['State variable','Smoothing']].plot(ax=axes[0],
           title='Early warning signals for a single realisation')
 df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
@@ -231,6 +231,9 @@ df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
 df_ews.loc[plot_num,var]['Coherence factor'].dropna().plot(ax=axes[2], secondary_y=True, legend=True)
 df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].plot(ax=axes[3],legend=True, marker='o')
 
+axes[0].set_ylabel('Population')
+axes[0].legend()
+axes[2].set_xlim(0,tmax)
 
 ## Define function to make grid plot for evolution of the power spectrum in time
 def plot_pspec_grid(tVals, plot_num, var):
@@ -244,9 +247,9 @@ def plot_pspec_grid(tVals, plot_num, var):
                   )
 
     g.map(plt.plot, 'Frequency', 'Empirical', color='k', linewidth=2)
-    g.map(plt.plot, 'Frequency', 'Fit fold', color='b', linestyle='dashed', linewidth=1)
-    g.map(plt.plot, 'Frequency', 'Fit hopf', color='r', linestyle='dashed', linewidth=1)
-    g.map(plt.plot, 'Frequency', 'Fit null', color='g', linestyle='dashed', linewidth=1)
+#    g.map(plt.plot, 'Frequency', 'Fit fold', color='b', linestyle='dashed', linewidth=1)
+#    g.map(plt.plot, 'Frequency', 'Fit hopf', color='r', linestyle='dashed', linewidth=1)
+#    g.map(plt.plot, 'Frequency', 'Fit null', color='g', linestyle='dashed', linewidth=1)
     # Axes properties
     axes = g.axes
     # Set y labels
@@ -267,10 +270,8 @@ plot_pspec = plot_pspec_grid(t_display, plot_num, 'x')
 
 
 # Box plot to visualise kendall tau values
+plt.figure()
 df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
-
-
-
 
 
 
@@ -287,6 +288,7 @@ df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
 ## Export the first 5 realisations to see individual behaviour
 # EWS DataFrame (includes trajectories)
 df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+
 # Power spectrum DataFrame (only empirical values)
 df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
             header=True)
@@ -295,8 +297,6 @@ df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.cs
 # Export kendall tau values
 df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
 
-
-    
 
 
 
