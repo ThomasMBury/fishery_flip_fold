@@ -42,7 +42,7 @@ dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
 tmax = 500
 tburn = 100 # burn-in period
-numSims = 20
+numSims = 100
 seed = 1 # random number generation seed
 sigma = 0.02 # noise intensity
 
@@ -286,17 +286,20 @@ df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
 
 
 ## Export the first 5 realisations to see individual behaviour
-# EWS DataFrame (includes trajectories)
 df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
 
-# Power spectrum DataFrame (only empirical values)
+# Power spectrum DataFrame (only empirical values) of first 5 realisations
 df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
             header=True)
-
 
 # Export kendall tau values
 df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
 
+# AIC values at time t=299
+df_temp = df_ews.reset_index()
+df_aic_t300 = df_temp[df_temp['Time']==299][['Realisation number','AIC fold','AIC hopf','AIC null']]
+df_aic_t300.set_index('Realisation number', inplace=True)
+df_aic_t300.to_csv('data_export/'+dir_name+'/aic_t300.csv')
 
 
 
