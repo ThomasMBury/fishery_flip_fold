@@ -26,7 +26,7 @@ import ewstools
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_flip_ews'
+dir_name = 'ricker_flip_sigma0p04'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -44,7 +44,7 @@ tmax = 500
 tburn = 100 # burn-in period
 numSims = 100
 seed = 1 # random number generation seed
-sigma = 0.02 # noise intensity
+sigma = 0.04 # noise intensity
 
 # EWS parameters
 dt2 = 1 # spacing between time-series for EWS computation
@@ -280,16 +280,13 @@ df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
 ## Export data / figures
 #-----------------------------------
 
-## Export power spectrum evolution (grid plot)
-#plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
-
 
 
 ## Export the first 5 realisations to see individual behaviour
-df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+df_ews.loc[:40].to_csv('data_export/'+dir_name+'/ews_singles.csv')
 
 # Power spectrum DataFrame (only empirical values) of first 5 realisations
-df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+df_pspec.loc[:40,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
             header=True)
 
 # Export kendall tau values

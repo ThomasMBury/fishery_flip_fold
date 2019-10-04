@@ -25,7 +25,7 @@ import ewstools
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_fold_test'
+dir_name = 'ricker_fold_sigma0p04'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -41,16 +41,16 @@ dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
 tmax = 500
 tburn = 100 # burn-in period
-numSims = 20
-seed = 100 # random number generation seed
-sigma = 0.02 # noise intensity
+numSims = 100
+seed = 0 # random number generation seed
+sigma = 0.04 # noise intensity
 
 # EWS parameters
 dt2 = 1 # spacing between time-series for EWS computation
 rw = 0.4 # rolling window
 span = 0.5 # Lowess span
 lags = [1,2,3] # autocorrelation lag times
-ews = ['var','ac','sd','cv','skew','kurt','smax','cf'] # EWS to compute
+ews = ['var','ac','sd','cv','skew','kurt','smax','cf','aic'] # EWS to compute
 ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling windsow when doing spectrum metrics
@@ -276,28 +276,29 @@ df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
 
 
 
-#
-#
-##------------------------------------
-### Export data / figures
-##-----------------------------------
-#
-## Export power spectrum evolution (grid plot)
-#plot_pspec.savefig('figures/pspec_evol.png', dpi=200)
-#
-### Export the first 5 realisations to see individual behaviour
-## EWS DataFrame (includes trajectories)
-#df_ews.loc[:5].to_csv('data_export/'+dir_name+'/ews_singles.csv')
-## Power spectrum DataFrame (only empirical values)
-#df_pspec.loc[:5,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
-#            header=True)
-#
-#
-## Export kendall tau values
-#df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
 
 
+#------------------------------------
+## Export data / figures
+#-----------------------------------
 
+
+## Export the first 5 realisations to see individual behaviour
+df_ews.loc[:40].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+# Power spectrum DataFrame (only empirical values)
+df_pspec.loc[:40,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+            header=True)
+
+
+# Export kendall tau values
+df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
+
+
+# AIC values at time t=299
+df_temp = df_ews.reset_index()
+df_aic_t300 = df_temp[df_temp['Time']==299][['Realisation number','AIC fold','AIC hopf','AIC null']]
+df_aic_t300.set_index('Realisation number', inplace=True)
+df_aic_t300.to_csv('data_export/'+dir_name+'/aic_t300.csv')
 
 
 
