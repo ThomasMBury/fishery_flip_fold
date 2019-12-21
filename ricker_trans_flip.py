@@ -17,8 +17,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# import ewstools
+## import ewstools
+#import ewstools
+
+# import most recent ewstools from file
+import sys
+sys.path.append('../ewstools')
 import ewstools
+
 
 
 #---------------------
@@ -26,7 +32,7 @@ import ewstools
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_flip_sigma0p04'
+dir_name = 'ricker_flip2_sigma0p04'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -42,7 +48,7 @@ dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
 tmax = 500
 tburn = 100 # burn-in period
-numSims = 100
+numSims = 5
 seed = 1 # random number generation seed
 sigma = 0.04 # noise intensity
 
@@ -52,6 +58,7 @@ rw = 0.4 # rolling window
 span = 0.5 # Lowess span
 lags = [1,2,3] # autocorrelation lag times
 ews = ['var','ac','sd','cv','skew','kurt','smax','cf','aic'] # EWS to compute
+aic = ['Fold','Hopf','Null']
 ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling window when doing spectrum metrics
@@ -161,8 +168,10 @@ for i in range(numSims):
                           span=span,
                           lag_times = lags, 
                           ews = ews,
+                          aic=aic,
                           ham_length = ham_length,
                           ham_offset = ham_offset,
+                          sweep=False,
                           pspec_roll_offset = pspec_roll_offset,
                           upto=tcrit)
         
@@ -229,7 +238,7 @@ df_ews.loc[plot_num,var]['Variance'].plot(ax=axes[1],legend=True)
 df_ews.loc[plot_num,var][['Lag-1 AC','Lag-2 AC','Lag-3 AC']].plot(ax=axes[1], secondary_y=True,legend=True)
 df_ews.loc[plot_num,var]['Smax'].dropna().plot(ax=axes[2],legend=True)
 df_ews.loc[plot_num,var]['Coherence factor'].dropna().plot(ax=axes[2], secondary_y=True, legend=True)
-df_ews.loc[plot_num,var][['AIC fold','AIC hopf','AIC null']].plot(ax=axes[3],legend=True, marker='o')
+df_ews.loc[plot_num,var][['AIC fold','AIC hopf', 'AIC null']].plot(ax=axes[3],legend=True, marker='o')
 
 axes[0].set_ylabel('Population')
 axes[0].legend()
@@ -247,9 +256,10 @@ def plot_pspec_grid(tVals, plot_num, var):
                   )
 
     g.map(plt.plot, 'Frequency', 'Empirical', color='k', linewidth=2)
-#    g.map(plt.plot, 'Frequency', 'Fit fold', color='b', linestyle='dashed', linewidth=1)
-#    g.map(plt.plot, 'Frequency', 'Fit hopf', color='r', linestyle='dashed', linewidth=1)
-#    g.map(plt.plot, 'Frequency', 'Fit null', color='g', linestyle='dashed', linewidth=1)
+    g.map(plt.plot, 'Frequency', 'Fit fold', color='b', linestyle='dashed', linewidth=1)
+    g.map(plt.plot, 'Frequency', 'Fit flip', color='c', linestyle='dashed', linewidth=1)
+    g.map(plt.plot, 'Frequency', 'Fit hopf', color='r', linestyle='dashed', linewidth=1)
+    g.map(plt.plot, 'Frequency', 'Fit null', color='g', linestyle='dashed', linewidth=1)
     # Axes properties
     axes = g.axes
     # Set y labels
@@ -258,11 +268,14 @@ def plot_pspec_grid(tVals, plot_num, var):
         # Set y limit as max power over all time
         for ax in axes:
             ax.set_ylim(top=1.05*max(df_pspec.loc[plot_num,var]['Empirical']), bottom=0)
-       
+            ax.set_xlim(left=-np.pi, right=np.pi)
+            
+    g.add_legend()
+
     return g
 
 #  Choose time values at which to display power spectrum
-t_display = df_pspec.index.levels[2][::3].values
+t_display = df_pspec.index.levels[2][::1].values
 
 plot_pspec = plot_pspec_grid(t_display, plot_num, 'x')
 
@@ -282,21 +295,21 @@ df_ktau[['Variance','Lag-1 AC','Lag-2 AC','Smax']].boxplot()
 
 
 
-## Export the first 5 realisations to see individual behaviour
-df_ews.loc[:40].to_csv('data_export/'+dir_name+'/ews_singles.csv')
-
-# Power spectrum DataFrame (only empirical values) of first 5 realisations
-df_pspec.loc[:40,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
-            header=True)
-
-# Export kendall tau values
-df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
-
-# AIC values at time t=299
-df_temp = df_ews.reset_index()
-df_aic_t300 = df_temp[df_temp['Time']==299][['Realisation number','AIC fold','AIC hopf','AIC null']]
-df_aic_t300.set_index('Realisation number', inplace=True)
-df_aic_t300.to_csv('data_export/'+dir_name+'/aic_t300.csv')
+### Export the first 5 realisations to see individual behaviour
+#df_ews.loc[:20].to_csv('data_export/'+dir_name+'/ews_singles.csv')
+#
+## Power spectrum DataFrame (only empirical values) of first 5 realisations
+#df_pspec.loc[:20,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.csv',
+#            header=True)
+#
+## Export kendall tau values
+#df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
+#
+## AIC values at time t=299
+#df_temp = df_ews.reset_index()
+#df_aic_t300 = df_temp[df_temp['Time']==319][['Realisation number','AIC fold','AIC flip','AIC hopf','AIC null']]
+#df_aic_t300.set_index('Realisation number', inplace=True)
+#df_aic_t300.to_csv('data_export/'+dir_name+'/aic_t300.csv')
 
 
 
