@@ -294,11 +294,11 @@ df_pspec.loc[:40,'Empirical'].dropna().to_csv('data_export/'+dir_name+'/pspecs.c
 df_ktau.to_csv('data_export/'+dir_name+'/ktau.csv')
 
 
-# AIC values at time t=299
-df_temp = df_ews.reset_index()
-df_aic_t300 = df_temp[df_temp['Time']==299][['Realisation number','AIC fold','AIC hopf','AIC null']]
-df_aic_t300.set_index('Realisation number', inplace=True)
-df_aic_t300.to_csv('data_export/'+dir_name+'/aic_t300.csv')
+## AIC values at time t=299
+#df_temp = df_ews.reset_index()
+#df_aic_t300 = df_temp[df_temp['Time']==299][['Realisation number','AIC fold','AIC hopf','AIC null']]
+#df_aic_t300.set_index('Realisation number', inplace=True)
+#df_aic_t300.to_csv('data_export/'+dir_name+'/aic_t300.csv')
 
 
 
