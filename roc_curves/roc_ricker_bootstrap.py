@@ -3,8 +3,10 @@
 """
 Created on Thu Jan 30 11:58:49 2020
 
-Compute roc curves for EWS in the Ricker model (without bootstrapping)
+Compute roc curves for EWS in the Ricker model with bootstrapping
+Is there improved statistical performance with bootstrapping?
 Export data in a df for plotting in MMA
+
 
 @author: tbury
 """
@@ -59,7 +61,6 @@ df_roc_flip = pd.concat([df_ktau_flip,df_ktau_null],axis=0,ignore_index=True)
 df_roc_var = roc_compute(df_roc_fold['Truth'],df_roc_fold['Variance'])
 df_roc_ac = roc_compute(df_roc_fold['Truth'],df_roc_fold['Lag-1 AC'])
 df_roc_smax = roc_compute(df_roc_fold['Truth'],df_roc_fold['Smax'])
-#df_roc_sd = roc_compute(df_roc_fold['Truth'],df_roc_fold['Standard deviation'])
 
 ## Plot ROC curve for EWS prior to Fold bif
 
@@ -67,7 +68,6 @@ plt.title('Prior to Fold bifurcation')
 plt.plot(df_roc_var['fpr'], df_roc_var['tpr'], 'b', label = 'Variance, AUC = %0.2f' % df_roc_var['auc'][0])
 plt.plot(df_roc_ac['fpr'], df_roc_ac['tpr'], 'g', label = 'Lag-1 AC, AUC = %0.2f' % df_roc_ac['auc'][0])
 plt.plot(df_roc_smax['fpr'], df_roc_smax['tpr'], 'k', label = 'Smax, AUC = %0.2f' % df_roc_smax['auc'][0])
-#plt.plot(df_roc_sd['fpr'], df_roc_sd['tpr'], 'c', label = 'Standard deviation, AUC = %0.2f' % df_roc_sd['auc'][0])
 
 plt.legend(loc = 'lower right')
 plt.plot([0, 1], [0, 1],'r--')
