@@ -24,7 +24,7 @@ import ewstools
 #–----------------------
 
 # Name of directory within data_export
-dir_name = 'ricker_null_sigma0p04'
+dir_name = 'ricker_null_sigma0p04_noAIC'
 
 if not os.path.exists('data_export/'+dir_name):
     os.makedirs('data_export/'+dir_name)
@@ -40,7 +40,7 @@ dt = 1 # time-step (must be 1 since discrete-time system)
 t0 = 0
 tmax = 500
 tburn = 100 # burn-in period
-numSims = 5
+numSims = 100
 seed = 0 # random number generation seed
 sigma = 0.04 # noise intensity
 
@@ -49,7 +49,7 @@ dt2 = 1 # spacing between time-series for EWS computation
 rw = 0.4 # rolling window
 span = 0.5 # Lowess span
 lags = [1,2,3] # autocorrelation lag times
-ews = ['var','ac','sd','cv','skew','kurt','smax','cf','aic'] # EWS to compute
+ews = ['var','ac','sd','cv','skew','kurt','smax'] # EWS to compute
 ham_length = 40 # number of data points in Hamming window
 ham_offset = 0.5 # proportion of Hamming window to offset by upon each iteration
 pspec_roll_offset = 20 # offset for rolling windsow when doing spectrum metrics
